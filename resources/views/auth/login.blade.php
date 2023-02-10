@@ -6,8 +6,8 @@
             <div
                 class="col-lg-5 col-xl-4 p-12 p-xl-20 position-fixed start-0 top-0 h-screen overflow-y-hidden bg-primary d-none d-lg-flex flex-column">
                 <!-- Logo -->
-                <a class="d-block" href="#">
-                    <img src="{{ asset('images/logo.png') }}" class="h-20 m-auto d-block" alt="...">
+                <a class="d-block" href="home">
+                    <img src="{{ asset('images/EgyGuide.png') }}" class="h-10 m-auto d-block" alt="...">
                 </a>
                 <!-- Title -->
                 <div class="mt-12  text-center mb-20">
@@ -25,6 +25,27 @@
             </div>
             <div
                 class="col-12 col-md-9 col-lg-7 offset-lg-5 border-left-lg  d-flex flex-column justify-content-center py-lg-8 px-lg-10 position-relative">
+                @if ($message = Session::get('success'))
+                    <div class="row d-flex justify-content-end">
+                        <div class="col-6 ">
+                            <div class="alert alert-success alert-dismissible" role="alert">
+                                {{ $message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                    aria-label="Close"></button>
+                            </div>
+                        </div>
+                    </div>
+                @elseif ($message = Session::get('error'))
+                    <div class="row d-flex justify-content-end">
+                        <div class="col-6 ">
+                            <div class="alert alert-danger alert-dismissible" role="alert">
+                                {{ $message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                    aria-label="Close"></button>
+                            </div>
+                        </div>
+                    </div>
+                @endif
                 <div class="row">
                     <div class="col-lg-10 col-md-9 col-xl-6 mx-auto ms-xl-0">
                         <div class="mt-10 mt-lg-5 mb-6 d-flex align-items-center d-lg-block">
@@ -49,15 +70,14 @@
                             </div>
                             <div class="mb-2">
                                 <label class="form-label" for="password">Password</label>
-                                <input type="password"
-                                    class="form-control form-control-muted @error('password') is-invalid @enderror"
+                                <input type="password" class="form-control  @error('password') is-invalid @enderror"
                                     name="password" id="password" autocomplete="current-password" autofocus>
 
-                                @error('password')
+                                @if (session('error'))
                                     <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
+                                        <strong>{{ session('error') }}</strong>
                                     </span>
-                                @enderror
+                                @endif
                             </div>
                             <div class="mb-2">
                                 <div class="form-check">
