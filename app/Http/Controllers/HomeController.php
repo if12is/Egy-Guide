@@ -81,7 +81,14 @@ class HomeController extends Controller
     }
 
     public function update(Request $request)
+
+    public function update(Request $request)
     {
+        #validation
+        return response($request()->all())->json();
+        #Match old password
+
+        #update password
         #validation
         return response($request()->all())->json();
         #Match old password
