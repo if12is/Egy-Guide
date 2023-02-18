@@ -1,0 +1,635 @@
+/*
+* story instagram
+* File include item story instagram only specific css only
+******************************************************************************/
+
+/* story instagram */
+.toprate {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    align-items: center;
+    align-content: space-around;
+    flex-direction: column;
+}
+
+.wrapper {
+    width: 100%;
+    max-width: 1200px;
+    display: grid;
+    grid-template-columns: 70% 40%;
+    grid-gap: 30px;
+    justify-content: space-between;
+    align-content: space-between;
+    justify-items: end;
+    align-items: baseline;
+}
+
+.left-col {
+    display: flex;
+    flex-direction: column;
+}
+
+.status-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 1000px;
+    height: 120px;
+    background: #fff;
+    border: 1px solid #ffffff;
+    border-radius: 7px;
+    box-shadow: 0px 4px 20px #636c8788;
+    padding: 15px;
+    padding-right: 0;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    overflow-x: auto;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: space-between;
+}
+
+.status-wrapper::-webkit-scrollbar {
+    display: none;
+}
+
+.status-card {
+    position: relative;
+    flex: 0 0 auto;
+    width: 80px;
+    max-width: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 15px;
+}
+
+.profile-pic {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    overflow: hidden;
+    padding: 3px;
+    background: linear-gradient(45deg, rgb(255, 230, 0), rgb(255, 0, 128) 80%);
+}
+
+.profile-pic img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid #fff;
+}
+.profile-pic-comment {
+    width: 40px;
+    height: 40px;
+    display: inline-table;
+    border-radius: 50%;
+    overflow: hidden;
+    padding: 3px;
+    background: linear-gradient(45deg, rgb(255, 230, 0), rgb(255, 0, 128) 80%);
+}
+
+.profile-pic-comment img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid #fff;
+}
+
+.username {
+    width: 100%;
+    overflow: hidden;
+    text-align: center;
+    font-size: 12px;
+    margin-top: 5px;
+    color: rgba(0, 0, 0, 0.5);
+}
+
+i.logo-badge {
+    position: absolute;
+    display: block;
+    width: 24px;
+    height: 24px;
+    bottom: 39px;
+    right: 1px;
+    border-radius: 100%;
+    background: linear-gradient(110deg, rgb(255 231 10), rgb(255 90 173) 89%);
+    font-size: 12px;
+    color: #fff;
+    font-family: cursive;
+    line-height: 2;
+    text-align: center;
+}
+span.top {
+    position: absolute;
+    display: block;
+    width: 59px;
+    height: 20px;
+    top: -5px;
+    left: 1px;
+    background: linear-gradient(70deg, rgb(255 235 0), rgb(255 130 193) 89%);
+    font-size: 12px;
+    color: #fff;
+    font-family: cursive;
+    line-height: 2;
+    text-align: center;
+}
+/* POST CSS */
+.post {
+    width: 100%;
+    height: auto;
+    background: #fff;
+    border: 1px solid #dfdfdf;
+    margin-top: 40px;
+    border-radius: 6px;
+}
+
+.info {
+    width: 100%;
+    height: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.info .username {
+    width: auto;
+    font-weight: bold;
+    color: #000;
+    font-size: 14px;
+    margin-left: 10px;
+}
+
+.info .options {
+    height: 10px;
+    cursor: pointer;
+}
+
+.info .user {
+    display: flex;
+    align-items: center;
+}
+
+.info .profile-pic {
+    height: 40px;
+    width: 40px;
+    padding: 0;
+    background: none;
+}
+
+.info .profile-pic img {
+    border: none;
+}
+
+.post-image {
+    width: 100%;
+    height: 500px;
+    object-fit: cover;
+}
+
+.post-content {
+    width: 100%;
+    padding: 20px;
+}
+
+.likes {
+    font-weight: bold;
+}
+
+.description {
+    margin: 10px 0;
+    font-size: 14px;
+    line-height: 20px;
+}
+
+.description span {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.comment {
+    margin: 10px 0;
+    font-size: 14px;
+    line-height: 20px;
+}
+
+.comment span {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.post-time {
+    color: rgba(0, 0, 0, 0.5);
+    font-size: 12px;
+}
+
+.comment-wrapper {
+    width: 100%;
+    height: 50px;
+    border-radius: 1px solid #dfdfdf;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.comment-wrapper .icon {
+    height: 30px;
+}
+
+.comment-box {
+    width: 80%;
+    height: 100%;
+    border: 1px solid #e2e2e2;
+    outline: none;
+    border-radius: 30px;
+    padding-left: 10px;
+    font-size: 14px;
+    margin-bottom: 10px;
+    margin-left: 35px;
+}
+
+.comment-btn,
+.action-btn {
+    width: 70px;
+    height: 100%;
+    background: ghostwhite;
+    border: 1px solid #d2d2d2;
+    border-radius: 33px;
+    outline: none;
+    text-transform: capitalize;
+    font-size: 16px;
+    color: rgb(20 170 218);
+    opacity: 0.5;
+    margin: 0 12px 14px 0;
+}
+
+.reaction-wrapper {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    margin-top: -20px;
+    align-items: center;
+    cursor: pointer;
+}
+
+.reaction-wrapper .icon {
+    height: 25px;
+    margin: 0;
+    margin-right: 20px;
+}
+
+.reaction-wrapper .icon.save {
+    margin-left: auto;
+}
+
+#heart.red {
+    color: red;
+}
+
+#dislike.black {
+    color: blue;
+}
+.like_heart {
+    width: 32px;
+    height: auto !important;
+}
+span.speace {
+    margin: 0 10px;
+}
+
+.right-col {
+    padding: 20px;
+}
+
+.profile-card {
+    width: fit-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.profile-card .profile-pic {
+    flex: 0 0 auto;
+    padding: 0;
+    background: none;
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
+
+.profile-card:first-child .profile-pic {
+    width: 70px;
+    height: 70px;
+}
+
+.profile-card .profile-pic img {
+    border: none;
+}
+
+.profile-card .username {
+    font-weight: 500;
+    font-size: 14px;
+    color: #000;
+}
+
+.sub-text {
+    color: rgba(0, 0, 0, 0.5);
+    font-size: 12px;
+    font-weight: 500;
+    margin-top: 5px;
+}
+
+.action-btn {
+    opacity: 1;
+    font-weight: 700;
+    font-size: 12px;
+}
+
+.suggestion-text {
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.5);
+    font-weight: 700;
+    margin: 20px 0;
+}
+
+@media (max-width: 1100px) {
+    .right-col,
+    .search-box {
+        display: none;
+    }
+    .nav-wrapper,
+    .wrapper {
+        width: 90%;
+    }
+    .wrapper {
+        display: block;
+    }
+}
+
+@media (max-width: 500px) {
+    .nav-items .icon {
+        margin: 0 5px;
+    }
+    .post-image {
+        height: 300px;
+    }
+}
+
+/* ################################################# */
+/* single post css */
+/* ################################################# */
+.social-article {
+    max-width: 1200px;
+    display: flex;
+    height: auto;
+    min-height: auto;
+    max-height: 505px;
+    min-width: auto;
+    position: relative;
+    width: calc(100% - 2px);
+    border-radius: 3px;
+    border: 1px solid #dbdbdb;
+    align-items: stretch;
+    background-color: #fff;
+    flex: 0 0 auto;
+    flex-flow: row nowrap;
+    font: normal normal 400 normal 14px/18px -apple-system, system-ui,
+        "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.social-right-col {
+    width: 40%;
+    align-items: center;
+    border-top: 0px solid black;
+    border-right: 0px solid black;
+    border-bottom: 1px solid #efefef;
+    border-left: 1px solid #efefef;
+    flex: 0 0 auto;
+}
+.social-right-col .social-name {
+    color: #262626;
+    text-decoration: none solid #262626;
+    text-size-adjust: 100%;
+    font-weight: 600;
+    margin: 0px 0px 0px -5px;
+    outline: #262626 none 0px;
+    overflow: hidden;
+    padding: 0px 0px 0px 5px;
+}
+.social-right-col .social-header {
+    position: relative;
+    display: flex;
+    text-size-adjust: 100%;
+    width: 100%;
+    align-items: center;
+    align-self: center;
+    flex: auto;
+    flex-flow: row nowrap;
+    padding: 16px;
+    border-bottom: 1px solid #efefef;
+}
+.social-right-col .social-header .social-profile-img {
+    height: 34px;
+    left: 0px;
+    position: relative;
+    width: 34px;
+    border: 0px none #003569;
+    border-radius: 50% 50% 50% 50%;
+    flex: 0 0 auto;
+    outline: #003569 none 0px;
+    overflow: hidden;
+    margin: 0 18px 0 0;
+}
+.social-right-col .social-header .social-profile-img img {
+    cursor: pointer;
+    height: 34px;
+    width: 34px;
+    border: 0px none #003569;
+    outline: #003569 none 0px;
+}
+.social-right-col .social-header .social-follow {
+    display: flex;
+    height: 18px;
+    position: relative;
+    width: 100%;
+    flex: 1 1 auto;
+    flex-flow: row nowrap;
+    overflow: hidden;
+}
+.social-right-col .social-header .social-follow button {
+    border: 0;
+    color: #3897f0;
+    display: inline;
+    padding: 0;
+    font-weight: 600;
+}
+.social-right-col .social-header .social-follow .SPAN_13 {
+    margin: 0px 4px;
+}
+.social-right-col .social-comments-wrap {
+    display: flex;
+    height: 80%;
+    width: 100%;
+    align-items: stretch;
+    flex: 0 0 auto;
+    flex-flow: column nowrap;
+}
+.social-right-col .social-post {
+    bottom: 0px;
+    box-sizing: border-box;
+    display: flex;
+    transform-origin: 167px 112px;
+    border: 0px solid black;
+    flex-flow: column nowrap;
+    overflow: hidden auto;
+    flex-grow: 1;
+    height: 100%;
+}
+.social-right-col .social-post .social-header {
+    align-items: flex-start;
+    height: 100%;
+}
+.social-right-col .social-post .social-copy .social-post-copy {
+    margin-left: 6px;
+}
+.social-right-col .social-post .social-copy time {
+    margin: 16px 0 4px;
+    color: #999;
+    display: block;
+    font-size: 12px;
+}
+.social-right-col .social-date {
+    bottom: 0px;
+    box-sizing: border-box;
+    height: 19px;
+    align-items: stretch;
+    flex: 0 0 auto;
+    flex-flow: column nowrap;
+    padding: 0px 0px 0px 16px;
+}
+.social-right-col .social-date time {
+    color: #999999;
+    letter-spacing: 0.2px;
+    text-decoration: none solid #999999;
+    text-transform: uppercase;
+    font-size: 10px;
+}
+.social-right-col .icons-section {
+    display: flex;
+    height: 45px;
+    position: relative;
+    align-items: stretch;
+    flex: 0 0 auto;
+    padding: 4px 16px 0px;
+}
+.social-right-col .icons-section .icons-button {
+    background-position: 0px 0px;
+    cursor: pointer;
+    display: flex;
+    height: 40px;
+    min-height: 40px;
+    min-width: 40px;
+    width: 40px;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    background: rgba(0, 0, 0, 0) none repeat scroll 0px 0px / auto padding-box
+        border-box;
+}
+.social-right-col .icons-section .icons-button span {
+    color: rgba(0, 0, 0, 0.847);
+    cursor: pointer;
+    display: block;
+    height: 24px;
+    min-height: auto;
+    min-width: auto;
+    text-align: center;
+    width: 24px;
+    background: rgba(0, 0, 0, 0)
+        url("https://www.instagram.com/static/bundles/es6/sprite_glyphs_7f5bab945363.png/7f5bab945363.png")
+        no-repeat scroll -231px -130px / auto padding-box border-box;
+}
+.social-right-col .icons-section .icons-button span.icon1 {
+    background-position: -231px -130px;
+}
+.social-right-col .icons-section .icons-button span.icon2 {
+    background-position: 0px -177px;
+}
+.social-right-col .icons-section .icons-button span.icon3 {
+    background-position: -283px -78px;
+}
+.social-right-col .icons-section .icons-button span.icon4 {
+    background-position: -208px -255px;
+}
+.social-right-col .icons-section .icons-button:last-child {
+    margin-left: auto;
+}
+.social-right-col .likes-wrap {
+    color: #262626;
+    font-weight: 600;
+    padding: 0 0 0 16px;
+}
+
+.social-left-col {
+    bottom: 0px;
+    display: flex;
+    height: 100%;
+    width: 60%;
+    min-height: 450px;
+    min-width: auto;
+    position: relative;
+    align-items: stretch;
+    justify-content: center;
+    background: black none repeat scroll 0% 0% / auto padding-box border-box;
+    border: 0px solid black;
+    flex: 0 0 auto;
+    flex-flow: column nowrap;
+}
+.social-left-col .social-img-wrap {
+    bottom: 0px;
+    box-sizing: border-box;
+    height: 0;
+    left: 0px;
+    position: relative;
+    right: 0px;
+    top: 0px;
+    width: 100%;
+    align-items: stretch;
+    border: 0px solid black;
+    flex: 0 0 auto;
+    flex-flow: column nowrap;
+    overflow: hidden;
+    padding: 0px 0px 70%;
+}
+.social-left-col .social-img {
+    bottom: 0px;
+    display: block;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    width: 100%;
+    user-select: none;
+}
+/* ######################## */
+/* post_create css */
+/* ######################## */
+.post_create {
+    margin: 20px;
+}
+.post-create {
+    min-width: 800px;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0;
+}

@@ -6,8 +6,8 @@
             <div
                 class="col-lg-5 col-xl-4 p-12 p-xl-20 position-fixed start-0 top-0 h-screen overflow-y-hidden bg-primary d-none d-lg-flex flex-column">
                 <!-- Logo -->
-                <a class="d-block" href="#">
-                    <img src="{{ asset('images/logo.png') }}" class="h-20 m-auto d-block" alt="...">
+                <a class="d-block" href="home">
+                    <img src="{{ asset('images/EgyGuide.png') }}" class="h-10 m-auto d-block" alt="...">
                 </a>
                 <!-- Title -->
                 <div class="mt-12  text-center mb-20">
