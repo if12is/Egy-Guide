@@ -192,7 +192,7 @@
                             <img src="{{ $post->getFirstMediaUrl('images') }}" class="post-image"
                                 alt="{{ $post->title }}">
                         @elseif ($post->hasMedia('videos'))
-                            <video controls style="width: -webkit-fill-available; max-height: 504px;">
+                            <video controls="controls" style="width: -webkit-fill-available; max-height: 504px;">
                                 <source src="{{ $post->getFirstMediaUrl('videos') }}" type="{{ $post->mime_type }}">
                             </video>
                         @endif
