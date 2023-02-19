@@ -19,6 +19,12 @@ class PostController extends Controller
         $this->middleware('auth');
     }
 
+    public function show($id)
+    {
+        $post = Post::findOrFail($id);
+        return view('front.single-post', ['post' => $post]);
+    }
+
 
     public function store(Request $request)
     {

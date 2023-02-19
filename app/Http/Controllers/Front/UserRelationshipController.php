@@ -6,56 +6,47 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\UserRelationship;
+use Illuminate\Support\Facades\Auth;
 
 class UserRelationshipController extends Controller
 {
-    // public function follow(User $user)
-    // {
-    //     if (auth()->user()->id === $user->id) {
-    //         return back()->withErrors(['error' => 'You cannot follow yourself.']);
-    //     }
 
-    //     if (auth()->user()->following->contains($user)) {
-    //         return back()->withErrors(['error' => 'You are already following this user.']);
-    //     }
-
-    //     auth()->user()->following()->attach($user);
-
-    //     return back()->with(['success' => 'You are now following ' . $user->name]);
-    // }
-
-    // public function unfollow(User $user)
-    // {
-
-    //     auth()->user()->following()->detach($user);
-
-    //     return back()->with(['success' => 'You have unfollowed ' . $user->name]);
-    // }
-
-    public function follow(Request $request, $id)
+    public function showUsers()
     {
-        $user = User::find($id);
-        $follower = $request->user();
+        // Get the authenticated user
+        $authUser = auth()->user();
+        $authUserId = Auth::id();
 
-        $follower->followers()->create([
-            'followed_id' => $user->id,
+        // Filter out the users that the authenticated user is already following
+        $usersNotFollowed = User::whereNotIn('id', function ($query) use ($authUserId) {
+            $query->select('following_id')
+                ->from('user_relationships')
+                ->where('follower_id', $authUserId);
+        })->where('is_admin', '=', 0)
+            ->where('id', '<>', $authUserId)
+            ->orderBy('id', 'desc')
+            ->paginate(6);
+
+
+        // dd($usersNotFollowed);
+        return view('front.connections', [
+            'users' => $usersNotFollowed,
+            'user' => $authUser
         ]);
-
-        return redirect()->back()->with('success', 'You have followed ' . $user->name);
     }
 
-    public function unfollow(Request $request, $id)
+
+    public function store(User $user)
     {
-        $user = User::find($id);
-        $follower = $request->user();
+        auth()->user()->follow($user);
 
-        $follower->followers()->where('followed_id', $user->id)->delete();
-
-        return redirect()->back()->with('success', 'You have unfollowed ' . $user->name);
+        return back()->with('success', 'You have followed ' . $user->name);
     }
 
-    public function isFollowing($id)
+    public function destroy(User $user)
     {
-        return $this->following()->where('id', $id)->exists();
+        auth()->user()->unfollow($user);
+
+        return back()->with('success', 'You have unfollowed ' . $user->name);
     }
 }

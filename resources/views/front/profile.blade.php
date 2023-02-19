@@ -227,14 +227,15 @@
                         <ul class="list-unstyled mb-0">
                             <li class="d-flex align-items-center mb-3">
                                 <i class="ti ti-users"></i><span class="fw-bold mx-2">Followers:</span>
-                                <span>13.5k</span>
+                                <span>{{ $user->followers()->count() }}</span>
                             </li>
                             <li class="d-flex align-items-center mb-3">
-                                <i class="ti ti-users"></i><span class="fw-bold mx-2">Followed:</span> <span>897</span>
+                                <i class="ti ti-users"></i>
+                                <span class="fw-bold mx-2">Followed:</span <span>{{ $user->following()->count() }}</span>
                             </li>
                             <li class="d-flex align-items-center mb-1">
                                 <i class="ti ti-movie"></i><span class="fw-bold mx-2">Posts:</span>
-                                <span>{{ $user->posts_count }}</span>
+                                <span>{{ $user->posts()->count() }}</span>
                             </li>
                         </ul>
                     </div>
@@ -283,7 +284,6 @@
                                                             <button class="dropdown-item" type="submit">Delete
                                                                 <i class="ti ti-trash mx-2"></i> </button>
                                                         </form>
-                                                        {{-- <a class="dropdown-item" href="javascript:void(0);">Delete</a> --}}
                                                     </li>
                                                 </ul>
                                             </div>
@@ -296,7 +296,7 @@
                                 </h6>
                                 @if ($post->hasMedia('images'))
                                     <img src="{{ $post->getFirstMediaUrl('images') }}" class="img-fluid"
-                                        alt="{{ $post->title }}">
+                                        style="width: -webkit-fill-available; " alt="{{ $post->title }}">
                                 @elseif ($post->hasMedia('videos'))
                                     <video controls style="width: -webkit-fill-available; max-height: 504px;">
                                         <source src="{{ $post->getFirstMediaUrl('videos') }}"
@@ -313,6 +313,7 @@
                                 <a href="javascript:void(0);" class="card-link">Card link</a>
                                 <a href="javascript:void(0);" class="card-link">Another link</a>
                             </div>
+                            @include('front.comment-home')
                         </div>
                         <!-- User Posts -->
                     </div>

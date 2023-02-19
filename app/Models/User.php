@@ -54,14 +54,29 @@ class User extends Authenticatable implements HasMedia
         return $this->hasOne(Bio::class, 'user_id', 'id');
     }
 
-    public function followers()
+
+    public function following()
     {
-        return $this->hasMany(UserRelationship::class, 'following_id');
+        return $this->belongsToMany(User::class, 'user_relationships', 'follower_id', 'following_id');
     }
 
-
-    public function isFollowing($id)
+    public function followers()
     {
-        return $this->following()->where('id', $id)->exists();
+        return $this->belongsToMany(User::class, 'user_relationships', 'following_id', 'follower_id');
+    }
+
+    public function follow(User $user)
+    {
+        $this->following()->attach($user->id);
+    }
+
+    public function unfollow(User $user)
+    {
+        $this->following()->detach($user->id);
+    }
+
+    public function isFollowing(User $user)
+    {
+        return $this->following()->where('id', $user->id)->exists();
     }
 }

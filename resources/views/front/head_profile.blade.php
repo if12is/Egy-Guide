@@ -41,10 +41,11 @@
                                         </li>
                                     </ul>
                                 </div>
-                                {{-- @if (Auth::check() && Auth::user()->id !== $user->id)
+                                @if (Auth::check() && Auth::user()->id !== $user->id)
                                     @if (auth()->user()->following->contains($user->id))
                                         <form action="{{ route('users.unfollow', $user->id) }}" method="post">
                                             @csrf
+                                            @method('DELETE')
                                             <button
                                                 class="btn btn-primary  {{ $user->id == Auth::id() ? 'd-none' : '' }}"
                                                 type="submit"><i class="ti ti-user-check me-1"></i> Unfollow</button>
@@ -54,10 +55,11 @@
                                             @csrf
                                             <button
                                                 class="btn btn-primary {{ $user->id == Auth::id() ? 'd-none' : '' }}"
-                                                type="submit"> <i class="ti ti-user-check me-1"></i>Follow</button>
+                                                type="submit"> <i
+                                                    class="ti-xs me-1 ti ti-user-plus"></i>Follow</button>
                                         </form>
                                     @endif
-                                @endif --}}
+                                @endif
                             </div>
                         </div>
                     </div>

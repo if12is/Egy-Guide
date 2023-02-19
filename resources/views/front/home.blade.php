@@ -27,10 +27,12 @@
             <span class="top">Top Rated</span>
             @foreach ($topUsers as $topUser)
                 <div class="status-card">
-                    <div class="profile-pic">
-                        <img src="{{ optional($topUser->getFirstMedia('avatars'))->getUrl() ?: asset('assets/img/avatars/unknown-avatar.jpeg') }}"
-                            alt="top user">
-                    </div>
+                    <a href="{{ route('home.profile-show', ['id' => $topUser->id]) }}">
+                        <div class="profile-pic">
+                            <img src="{{ optional($topUser->getFirstMedia('avatars'))->getUrl() ?: asset('assets/img/avatars/unknown-avatar.jpeg') }}"
+                                alt="top user">
+                        </div>
+                    </a>
                     <i class="logo-badge">{{ $count }}</i>
                     <p class="topUsername">{{ $topUser->name }}</p>
                 </div>
@@ -147,11 +149,11 @@
             </div>
         </div>
 
-        <div class="wrapper">
+        <div class="wrapper my-2">
             <div class="left-col" id="posts">
                 {{-- post  --}}
                 @foreach ($posts as $post)
-                    <div class="post card">
+                    <div class="post card mb-4">
                         <div class="info">
                             <div class="user">
                                 <div class="profile-pic">
@@ -213,13 +215,6 @@
                                 <i class="ti ti-heart-off ti-lg ti-flashing-hover" id="dislike"></i>
                                 <span class="speace"></span>
                                 <i class="ti ti-message-circle-2 ti-lg scaleX-n1 ti-burst-hover" id="iconComment"></i>
-                                {{-- <a class="signet">
-                            <svg fill="#262626" height="24" viewBox="0 0 48 48" width="24">
-                                <path
-                                    d="M43.5 48c-.4 0-.8-.2-1.1-.4L24 29 5.6 47.6c-.4.4-1.1.6-1.6.3-.6-.2-1-.8-1-1.4v-45C3 .7 3.7 0 4.5 0h39c.8 0 1.5.7 1.5 1.5v45c0 .6-.4 1.2-.9 1.4-.2.1-.4.1-.6.1zM24 26c.8 0 1.6.3 2.2.9l15.8 16V3H6v39.9l15.8-16c.6-.6 1.4-.9 2.2-.9z">
-                                </path>
-                            </svg>
-                        </a> --}}
                             </div>
                             <p class="likes">1,012 likes</p>
                             <div class="filter">
@@ -227,48 +222,13 @@
                                 <span class="badge rounded-pill bg-label-info">#{{ $post->state->name }}</span>
                             </div>
                             <p class="description">
-                                <span><strong> User_name</strong> </span> Lorem ipsum dolor sit amet consectetur,
-                                adipisicing
-                                elit.
-                                Pariatur
-                                tenetur veritatis placeat, molestiae impedit aut provident eum quo natus molestias?
+                                <span><strong> {{ $post->user->name }}</strong> </span> {{ $post->description }}
                             </p>
-                            <p class="post-time">2 minutes ago</p>
-                            <div>
-                                <p class="comment">
-                                <div class="profile-pic-comment"><img src="{{ asset('assets/img/avatars/2.png') }}"
-                                        alt="">
-                                </div>
-                                <span><strong> User_name</strong> </span> Lorem ipsum dolor sit amet consectetur,
-                                adipisicing
-                                elit.
-                                Pariatur
-                                tenetur veritatis placeat, molestiae impedit aut provident eum quo natus molestias?
-                                </p>
-                                <p class="post-time">2 minutes ago</p>
-                            </div>
+                            <p class="post-time">{{ $post->created_at->diffForHumans() }}</p>
+
 
                         </div>
-                        <div class="row">
-                            <form action="{{ route('comments.store') }}" method="post">
-                                @csrf
-
-                                <div class="col-11">
-                                    <div class="input-group input-group-merge m-2 ">
-                                        <input type="hidden" name="post_id" value="{{ $post->id }}">
-                                        <input type="hidden" name="parent_id" value="{{ $post->comment->id ?? '' }}">
-                                        <span class="input-group-text" id="basic-addon-comment"><i
-                                                class="ti ti-brand-telegram"></i></span>
-                                        <input type="text" class="form-control" name="body"
-                                            placeholder="Comment......" aria-label="Comment..."
-                                            aria-describedby="basic-addon-comment">
-                                        <button class="btn btn-outline-success waves-effect" type="submit"
-                                            id="basic-addon-comment">comment</button>
-                                    </div>
-                                </div>
-
-                            </form>
-                        </div>
+                        {{-- iclude comment page --}}
                         @include('front.comment-home')
                     </div>
                 @endforeach
@@ -280,70 +240,28 @@
                 </div>
             </div>
 
-            <div class="right-col">
-                <div class="profile-card">
-                    <div class="profile-pic">
-                        <img src="{{ asset('assets/img/avatars/1.png') }}" alt="">
-                    </div>
-                    <div>
-                        <p class="username">modern_web_channel</p>
-                        <p class="sub-text">kunaal kumar</p>
-                    </div>
-                    <button class="action-btn">switch</button>
-                </div>
+            <div class="right-col card justify-content-center">
                 <p class="suggestion-text">Suggestions for you</p>
-                <div class="profile-card">
-                    <div class="profile-pic">
-                        <img src="{{ asset('assets/img/avatars/2.png') }}" alt="">
+                @foreach ($usersNotFollowed as $user)
+                    <div class="profile-card">
+                        <a href="{{ route('home.profile-show', ['id' => $user->id]) }}">
+                            <div class="profile-pic">
+                                <img src="{{ optional($user->getFirstMedia('avatars'))->getUrl() ?: asset('assets/img/avatars/unknown-avatar.jpeg') }}"
+                                    alt="user profile image for {{ $user->name }}">
+                            </div>
+                        </a>
+                        <div>
+                            <p class="username">{{ $user->name }}</p>
+                            <p class="sub-text">Joined: {{ $user->created_at->format('M  Y') }}</p>
+                        </div>
+                        <form action="{{ route('users.follow', $user->id) }}" method="post">
+                            @csrf
+                            <button class="btn btn-sm rounded-pill btn-outline-success waves-effect mx-2" type="submit">
+                                <i class="ti-xs me-1 ti ti-user-plus"></i>Follow</button>
+                        </form>
                     </div>
-                    <div>
-                        <p class="username">modern_web_channel</p>
-                        <p class="sub-text">followed bu user</p>
-                    </div>
-                    <button class="action-btn">follow</button>
-                </div>
-                <div class="profile-card">
-                    <div class="profile-pic">
-                        <img src="{{ asset('assets/img/avatars/3.png') }}" alt="">
-                    </div>
-                    <div>
-                        <p class="username">modern_web_channel</p>
-                        <p class="sub-text">followed bu user</p>
-                    </div>
-                    <button class="action-btn">follow</button>
-                </div>
-                <div class="profile-card">
-                    <div class="profile-pic">
-                        <img src="{{ asset('assets/img/avatars/4.png') }}" alt="">
-                    </div>
-                    <div>
-                        <p class="username">modern_web_channel</p>
-                        <p class="sub-text">followed bu user</p>
-                    </div>
-                    <button class="action-btn">follow</button>
-                </div>
-                <div class="profile-card">
-                    <div class="profile-pic">
-                        <img src="{{ asset('assets/img/avatars/5.png') }}" alt="">
-                    </div>
-                    <div>
-                        <p class="username">modern_web_channel</p>
-                        <p class="sub-text">followed bu user</p>
-                    </div>
-                    <button class="action-btn">follow</button>
-                </div>
-                <div class="profile-card">
-                    <div class="profile-pic">
-                        <img src="{{ asset('assets/img/avatars/6.png') }}" alt="">
-                    </div>
-                    <div>
-                        <p class="username">modern_web_channel</p>
-                        <p class="sub-text">followed bu user</p>
-                    </div>
-                    <button class="action-btn">follow</button>
-                </div>
+                @endforeach
             </div>
-
         </div>
     </section>
 

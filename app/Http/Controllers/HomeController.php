@@ -34,12 +34,21 @@ class HomeController extends Controller
         $id = Auth::id();
 
 
-        // dd($topUsers);
+        // Filter out the users that the authenticated user is already following
+        $usersNotFollowed = User::whereNotIn('id', function ($query) use ($id) {
+            $query->select('following_id')
+                ->from('user_relationships')
+                ->where('follower_id', $id);
+        })->where('is_admin', '=', 0)
+            ->where('id', '<>', $id)
+            ->orderBy('id', 'desc')
+            ->paginate(6);
+        // dd($usersNotFollowed);
+
         $user = User::find($id);
         $countries = Country::all();;
         $posts = Post::orderBy('created_at', 'DESC')->paginate(5);
-        // $comments = Comment::get();
-        // dd($comments);
+
         $categories = Category::all();
 
         $topUsers = User::withCount('posts')
@@ -48,16 +57,9 @@ class HomeController extends Controller
             ->take(10)
             ->get();
 
-        // $topUsers = User::select('users.name', 'posts.user_id', DB::raw('COUNT(*) as count'))
-        //     ->join('posts', 'posts.user_id', '=', 'users.id')
-        //     ->where('users.is_admin', 0)
-        //     ->groupBy('posts.user_id')
-        //     ->orderBy('count', 'desc')
-        //     ->take(10)
-        //     ->get();
-        // dd($topUsers);
+
         $count = 1;
-        return view('front.home', compact('posts', 'countries', 'categories', 'user', 'topUsers', 'count'));
+        return view('front.home', compact('posts', 'countries', 'usersNotFollowed', 'categories', 'user', 'topUsers', 'count'));
     }
 
     // public function show_comment($id)

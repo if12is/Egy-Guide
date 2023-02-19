@@ -57,57 +57,72 @@
         <!--/ Navbar pills -->
 
         <!-- Connection Cards -->
-        <div class="row g-4">
+        <div class="row g-4 justify-content-center">
 
-            <div class="col-xl-4 col-lg-6 col-md-6">
-                <div class="card">
-                    <div class="card-body text-center">
-                        <div class="dropdown btn-pinned">
-                            <button type="button" class="btn dropdown-toggle hide-arrow p-0" data-bs-toggle="dropdown"
-                                aria-expanded="false">
-                                <i class="ti ti-dots-vertical text-muted"></i>
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-end">
-                                <li><a class="dropdown-item" href="javascript:void(0);">Share connection</a></li>
-                                <li><a class="dropdown-item" href="javascript:void(0);">Block connection</a></li>
-                                <li>
-                                    <hr class="dropdown-divider" />
-                                </li>
-                                <li><a class="dropdown-item text-danger" href="javascript:void(0);">Delete</a></li>
-                            </ul>
-                        </div>
-                        <div class="mx-auto my-3">
-                            <img src="../../assets/img/avatars/12.png" alt="Avatar Image" class="rounded-circle w-px-100" />
-                        </div>
-                        <h4 class="mb-1 card-title">Eugenia Parsons</h4>
-                        <span class="pb-1">Developer</span>
-                        <div class="d-flex align-items-center justify-content-center my-3 gap-2">
-                            <a href="javascript:;" class="me-1"><span class="badge bg-label-danger">Angular</span></a>
-                            <a href="javascript:;"><span class="badge bg-label-info">React</span></a>
-                        </div>
+            @foreach ($users as $user)
+                <div class="col-xl-4 col-lg-6 col-md-6 d-grid">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            {{-- <div class="dropdown btn-pinned">
+                                <button type="button" class="btn dropdown-toggle hide-arrow p-0" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                    <i class="ti ti-dots-vertical text-muted"></i>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li><a class="dropdown-item" href="javascript:void(0);">Share connection</a></li>
+                                    <li><a class="dropdown-item" href="javascript:void(0);">Block connection</a></li>
+                                    <li>
+                                        <hr class="dropdown-divider" />
+                                    </li>
+                                    <li><a class="dropdown-item text-danger" href="javascript:void(0);">Delete</a></li>
+                                </ul>
+                            </div> --}}
+                            <div class="mx-auto my-3">
+                                <a href="{{ route('home.profile-show', ['id' => $user->id]) }}">
+                                    <img src="{{ optional($user->getFirstMedia('avatars'))->getUrl() ?: asset('assets/img/avatars/unknown-avatar.jpeg') }}"
+                                        alt="Avatar Image" class="rounded-circle w-px-100" />
+                                </a>
+                            </div>
+                            <h4 class="mb-1 card-title">{{ $user->name }}</h4>
+                            {{-- <span class="pb-1">
+                                @if (empty($user->bio->job))
+                                    {{ 'NULL ' }}
+                                @else
+                                    {{ $user->bio->job }}
+                                @endif
+                            </span> --}}
+                            <div class="d-flex align-items-center justify-content-center my-3 gap-2">
+                                <a href="javascript:;" class="me-1"><span class="badge bg-label-danger">Angular</span></a>
+                                <a href="javascript:;"><span class="badge bg-label-info">React</span></a>
+                            </div>
 
-                        <div class="d-flex align-items-center justify-content-around my-3 py-1">
-                            <div>
-                                <h4 class="mb-0">112</h4>
-                                <span>Projects</span>
+                            <div class="d-flex align-items-center justify-content-around my-3 py-1">
+                                <div>
+                                    <h4 class="mb-0">{{ $user->posts()->count() }}</h4>
+                                    <span>Posts</span>
+                                </div>
+                                <div>
+                                    <h4 class="mb-0">{{ $user->followers()->count() }}</h4>
+                                    <span>Followers</span>
+                                </div>
+                                <div>
+                                    <h4 class="mb-0">{{ $user->following()->count() }}</h4>
+                                    <span>Followed</span>
+                                </div>
                             </div>
-                            <div>
-                                <h4 class="mb-0">23.1k</h4>
-                                <span>Tasks</span>
+                            <div class="d-flex align-items-center justify-content-center">
+                                <form action="{{ route('users.follow', $user->id) }}" method="post">
+                                    @csrf
+                                    <button class="btn btn-label-primary d-flex align-items-center me-3" type="submit"> <i
+                                            class="ti-xs me-1 ti ti-user-plus"></i>Follow</button>
+                                </form>
                             </div>
-                            <div>
-                                <h4 class="mb-0">1.28k</h4>
-                                <span>Connections</span>
-                            </div>
-                        </div>
-                        <div class="d-flex align-items-center justify-content-center">
-                            <a href="javascript:;" class="btn btn-label-primary d-flex align-items-center me-3"><i
-                                    class="ti-xs me-1 ti ti-user-plus me-1"></i>Connect</a>
-                            <a href="javascript:;" class="btn btn-label-secondary btn-icon"><i
-                                    class="ti ti-mail ti-sm"></i></a>
                         </div>
                     </div>
                 </div>
+            @endforeach
+            <div class="py-4">
+                {{ $users->links('front.pagination') }}
             </div>
 
         </div>

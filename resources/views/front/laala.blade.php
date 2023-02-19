@@ -333,3 +333,50 @@
           {{-- <img src="img/smile.PNG" class="icon" alt=""> --}}
       </div>
   </div>
+
+
+  {{-- comment --}}
+  {{-- edit btn model --}}
+
+  <!-- Button trigger modal -->
+  <button type="button"
+      class="btn btn-sm btn-info waves-effect waves-light {{ $comment->user->id == Auth::user()->id ? '' : 'd-none' }}"
+      data-bs-toggle="modal" data-bs-target="#basicModal{{ $comment->id }}">
+      edit
+  </button>
+
+  <!-- Modal -->
+  <form id="edit-comment" method="POST" action="{{ route('comments.update', $comment->id) }}">
+      @csrf
+      @method('POST')
+      <div class="modal fade" id="basicModal{{ $comment->id }}" tabindex="-1" style="display: none;"
+          aria-hidden="true">
+          <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel1">
+                          Vomment</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                      <div class="row">
+                          <div class="col mb-0">
+                              <label for="body" class="form-label">body
+                                  Title</label>
+                              <input type="text" id="body" class="form-control"
+                                  placeholder="Enter your comment body " name="body"
+                                  value="{{ $comment->body }} ">
+                          </div>
+                      </div>
+                  </div>
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-label-secondary waves-effect" data-bs-dismiss="modal">
+                          Close
+                      </button>
+                      <button type="submit" class="btn btn-primary waves-effect waves-light">Save
+                          changes</button>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </form>

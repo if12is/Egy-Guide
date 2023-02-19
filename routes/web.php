@@ -34,9 +34,8 @@ Route::get('/', function () {
 
 \Illuminate\Support\Facades\Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('admin/home', [\App\Http\Controllers\HomeController::class, 'adminHome'])->name('admin.home')->middleware('admin');
-// Route::get('/country', [CountriesController::class, 'getAllCountries']);
+// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// Route::get('admin/home', [\App\Http\Controllers\HomeController::class, 'adminHome'])->name('admin.home')->middleware('admin');
 
 Route::prefix('/')->middleware(['auth'])->group(function () {
 
@@ -47,16 +46,17 @@ Route::prefix('/')->middleware(['auth'])->group(function () {
 
     Route::get('/home/myprofile', [MainController::class, 'myprofile'])->name('home.myprofile');
     Route::get('/home/setting', [MainController::class, 'setting'])->name('home.setting');
-    Route::get('/home/post1', [MainController::class, 'post'])->name('home.post');
+
+    Route::get('/posts/{id}', [PostController::class, 'show'])->name('posts.show');
     Route::post('/home/post/store', [PostController::class, 'store'])->name('posts.store');
     Route::get('/home/post/edit/{id}', [PostController::class, 'edit'])->name('posts.edit');
     Route::put('/home/post/update/{id}', [PostController::class, 'update'])->name('posts.update');
     Route::post('/home/post/destroy/{id}', [PostController::class, 'destroy'])->name('posts.destroy');
-    Route::get('/get_states', [HomeController::class, 'getStates']);
 
+    Route::get('/get_states', [HomeController::class, 'getStates']);
     Route::get('/states/{country}', [PostController::class, 'getStates'])->name('states.index');
 
-    Route::get('/home/profile/connections', [MainProfileController::class, 'connections'])->name('home.connections');
+    Route::get('/home/profile/connections', [UserRelationshipController::class, 'showUsers'])->name('home.connections');
     Route::get('/home/profile', [MainProfileController::class, 'index'])->name('home.profile');
     Route::get('/home/profile/{id}', [MainProfileController::class, 'show'])->name('home.profile-show');
     Route::post('/home/profile/update', [MainProfileController::class, 'update'])->name('home.profile-update');
@@ -67,14 +67,15 @@ Route::prefix('/')->middleware(['auth'])->group(function () {
     Route::post('/home/setting', [SettingController::class, 'update'])->name('home.setting-update');
 
 
-    Route::post('/users/{id}/follow', [UserRelationshipController::class, 'follow'])->name('users.follow');
-    Route::post('/users/{id}/unfollow', [UserRelationshipController::class, 'unfollow'])->name('users.unfollow');
+    // Route::post('/users/{id}/follow', [UserRelationshipController::class, 'follow'])->name('users.follow');
+    // Route::post('/users/{id}/unfollow', [UserRelationshipController::class, 'unfollow'])->name('users.unfollow');
+
+    Route::post('/users/{user}/follow', [UserRelationshipController::class, 'store'])->name('users.follow');
+    Route::delete('/users/{user}/unfollow', [UserRelationshipController::class, 'destroy'])->name('users.unfollow');
 
     Route::post('/comments',  [CommentController::class, 'store'])->name('comments.store');
     Route::post('/comments/{comment}/update',  [CommentController::class, 'update'])->name('comments.update');
     Route::post('/comments/{comment}/delete',  [CommentController::class, 'destroy'])->name('comments.destroy');
-
-
     Route::post('reply',  [CommentController::class, 'store_reply'])->name('reply.store');
     // Route::get('comments/show',  [HomeController::class, 'show_comment'])->name('comments.show');
 

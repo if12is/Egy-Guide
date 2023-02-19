@@ -12,8 +12,13 @@ class UserRelationship extends Model
 
     protected $fillable = ['follower_id', 'following_id'];
 
-    public function user()
+    public function follower()
     {
         return $this->belongsTo(User::class, 'follower_id');
+    }
+
+    public function followed()
+    {
+        return $this->belongsTo(User::class, 'following_id');
     }
 }

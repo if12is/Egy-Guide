@@ -96,10 +96,10 @@ class MainProfileController extends Controller
         return redirect()->back()->with('success', 'Bio updated successfully.');
     }
 
-    public function connections()
-    {
-        $id = Auth::id();
-        $user = User::find($id);
-        return view('front.connections', compact('user'));
-    }
+    // public function connections()
+    // {
+    //     $id = Auth::id();
+    //     $user = User::find($id);
+    //     return view('front.connections', compact('user'));
+    // }
 }
