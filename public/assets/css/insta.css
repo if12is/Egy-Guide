@@ -18,7 +18,7 @@
     width: 100%;
     max-width: 1200px;
     display: grid;
-    grid-template-columns: 70% 40%;
+    grid-template-columns: 70% 30%;
     grid-gap: 30px;
     justify-content: space-between;
     align-content: space-between;
@@ -32,6 +32,12 @@
 }
 
 .status-wrapper {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center;
+    align-items: baseline;
+    justify-content: space-between;
     position: relative;
     width: 100%;
     max-width: 1000px;
@@ -42,14 +48,8 @@
     box-shadow: 0px 4px 20px #636c8788;
     padding: 15px;
     padding-right: 0;
-    display: flex;
-    align-items: center;
     overflow: hidden;
     overflow-x: auto;
-    flex-direction: column;
-    flex-wrap: wrap;
-    align-content: center;
-    justify-content: space-between;
 }
 
 .status-wrapper::-webkit-scrollbar {
@@ -107,7 +107,7 @@
     text-align: center;
     font-size: 12px;
     margin-top: 5px;
-    color: rgba(0, 0, 0, 0.5);
+    /* color: rgba(0, 0, 0, 0.5); */
 }
 
 i.logo-badge {
@@ -161,7 +161,7 @@ span.top {
 .info .username {
     width: auto;
     font-weight: bold;
-    color: #000;
+    /* color: #000; */
     font-size: 14px;
     margin-left: 10px;
 }
@@ -225,7 +225,7 @@ span.top {
 }
 
 .post-time {
-    color: rgba(0, 0, 0, 0.5);
+    /* color: rgba(0, 0, 0, 0.5); */
     font-size: 12px;
 }
 
@@ -305,6 +305,7 @@ span.speace {
 
 .right-col {
     padding: 20px;
+    max-width: 365px;
 }
 
 .profile-card {
@@ -336,11 +337,11 @@ span.speace {
 .profile-card .username {
     font-weight: 500;
     font-size: 14px;
-    color: #000;
+    /* color: #000;/ */
 }
 
 .sub-text {
-    color: rgba(0, 0, 0, 0.5);
+    /* color: rgba(0, 0, 0, 0.5); */
     font-size: 12px;
     font-weight: 500;
     margin-top: 5px;
@@ -354,7 +355,7 @@ span.speace {
 
 .suggestion-text {
     font-size: 14px;
-    color: rgba(0, 0, 0, 0.5);
+    /* color: rgba(0, 0, 0, 0.5); */
     font-weight: 700;
     margin: 20px 0;
 }
@@ -456,7 +457,8 @@ span.speace {
 }
 .social-right-col .social-header .social-follow {
     display: flex;
-    height: 18px;
+    /* height: 18px; */
+    align-items: center;
     position: relative;
     width: 100%;
     flex: 1 1 auto;
@@ -464,11 +466,11 @@ span.speace {
     overflow: hidden;
 }
 .social-right-col .social-header .social-follow button {
-    border: 0;
+    /* border: 0;
     color: #3897f0;
     display: inline;
     padding: 0;
-    font-weight: 600;
+    font-weight: 600; */
 }
 .social-right-col .social-header .social-follow .SPAN_13 {
     margin: 0px 4px;
@@ -544,7 +546,7 @@ span.speace {
         border-box;
 }
 .social-right-col .icons-section .icons-button span {
-    color: rgba(0, 0, 0, 0.847);
+    /* color: rgba(0, 0, 0, 0.847); */
     cursor: pointer;
     display: block;
     height: 24px;

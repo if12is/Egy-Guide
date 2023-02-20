@@ -1,6 +1,6 @@
 @extends('layouts.master-front')
 
-@section('title', 'Profile')
+@section('title', 'Connections')
 @section('style')
     <!-- Vendors2 CSS -->
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css') }}" />
@@ -34,7 +34,7 @@
                 </div>
             </div>
         @endif
-        <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">User Profile /</span> Profile</h4>
+        <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">User Profile /</span> Connections</h4>
         {{-- header --}}
         @include('front.head_profile')
         {{-- /header --}}

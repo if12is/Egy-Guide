@@ -29,6 +29,13 @@
                        </a>
                    </li>
                    <!-- /Search -->
+                   {{-- categry --}}
+                   <li class="nav-item  me-2 me-xl-0">
+                       <a class="nav-link " href="javascript:void(0);">
+                           <i class="ti ti-category ti-md"></i>
+                       </a>
+                   </li>
+                   {{-- categry --}}
 
                    <!-- Style Switcher -->
                    <li class="nav-item me-2 me-xl-0">
@@ -115,7 +122,8 @@
                                            <div class="flex-shrink-0 dropdown-notifications-actions">
                                                <a href="javascript:void(0)" class="dropdown-notifications-read"><span
                                                        class="badge badge-dot"></span></a>
-                                               <a href="javascript:void(0)" class="dropdown-notifications-archive"><span
+                                               <a href="javascript:void(0)"
+                                                   class="dropdown-notifications-archive"><span
                                                        class="ti ti-x"></span></a>
                                            </div>
                                        </div>

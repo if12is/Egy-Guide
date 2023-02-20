@@ -23,7 +23,7 @@
         </div>
     @endif
     <section class="toprate">
-        <div class="status-wrapper">
+        <div class="status-wrapper card justify-content-center align-baseline align-items-center flex-nowrap flex-row">
             <span class="top">Top Rated</span>
             @foreach ($topUsers as $topUser)
                 <div class="status-card">
@@ -163,6 +163,7 @@
                                     </a>
                                 </div>
                                 <p class="username">{{ $post->user->name }}</p>
+
                             </div>
                             <!-- Icon Dropdown -->
                             <div class="demo-inline-space {{ $post->user->id == Auth::user()->id ? '' : 'd-none' }}">
@@ -189,7 +190,11 @@
                                 </div>
                             </div>
                             <!--/ Icon Dropdown -->
+
                         </div>
+                        <a href="{{ route('posts.show', ['id' => $post->id]) }}">
+                            <p class="mx-4 text-secondary">{{ $post->title }}</p>
+                        </a>
                         @if ($post->hasMedia('images'))
                             <img src="{{ $post->getFirstMediaUrl('images') }}" class="post-image"
                                 alt="{{ $post->title }}">
@@ -215,7 +220,22 @@
                                 <i class="ti ti-heart-off ti-lg ti-flashing-hover" id="dislike"></i>
                                 <span class="speace"></span>
                                 <i class="ti ti-message-circle-2 ti-lg scaleX-n1 ti-burst-hover" id="iconComment"></i>
+                                {{-- <div>
+                                    @foreach ($post->reactions as $reaction)
+                                        <div>
+                                            <img src="{{ Reactions::getReactionByKey($reaction->name)->image }}"
+                                                alt="{{ $reaction->name }}">
+                                            <span>{{ $reaction->count }}</span>
+                                        </div>
+                                    @endforeach
+                                </div> --}}
                             </div>
+                            <button class="reaction-btn" data-post-id="{{ $post->id }}" data-reaction="like">
+                                <i class="fa fa-heart-o"></i> Like
+                            </button>
+                            <span class="like-count" data-post-id="{{ $post->id }}">Likes:
+                                {{ $post->reactions()->count('reactable_id') }}</span>
+
                             <p class="likes">1,012 likes</p>
                             <div class="filter">
                                 <span class="badge rounded-pill bg-label-primary">#{{ $post->category->name }}</span>
@@ -240,7 +260,7 @@
                 </div>
             </div>
 
-            <div class="right-col card justify-content-center">
+            <div class="right-col card justify-content-center align-items-center mx-auto">
                 <p class="suggestion-text">Suggestions for you</p>
                 @foreach ($usersNotFollowed as $user)
                     <div class="profile-card">
@@ -290,6 +310,73 @@
         $(document).ready(function() {
             $('.reply-btn').click(function() {
                 $('.reply-form').toggle();
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('.reaction-btn').click(function() {
+                var postId = $(this).data('post-id');
+                var reaction = $(this).data('reaction');
+
+                $.ajax({
+                    url: "{{ route('post.reaction') }}",
+                    type: "POST",
+                    data: {
+                        post_id: postId,
+                        reaction: reaction,
+                    },
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(response) {
+                        var count = response.count;
+                        $(this).text('Liked (' + count + ')');
+
+                        // var count = response.count;
+                        // var postId = response.post_id;
+
+                        // // Find the element that shows the reaction count for this post
+                        // var reactionCountEl = $('span[data-post-id="' + postId + '"]');
+
+                        // // Update the text of the element with the new reaction count
+                        // reactionCountEl.text(count);
+                    },
+                    error: function(response) {
+                        console.log(response.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+    <script>
+        $(document).on('click', '.reaction-btn', function() {
+            var button = $(this);
+            var postId = button.data('post-id');
+            var likeCountEl = $('span.like-count[data-post-id="' + postId + '"]');
+
+            $.ajax({
+                url: "{{ route('post.reaction') }}",
+                method: 'post',
+                data: {
+                    post_id: postId,
+                    reaction: 'like',
+                    _token: $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
+                    likeCountEl.text('Likes: ' + response.like_count);
+
+                    if (response.is_liked) {
+                        button.addClass('liked');
+                        button.find('i').removeClass('fa-heart-o').addClass('fa-heart');
+                    } else {
+                        button.removeClass('liked');
+                        button.find('i').removeClass('fa-heart').addClass('fa-heart-o');
+                    }
+                },
+                error: function(xhr) {
+                    console.log(xhr.responseText);
+                }
             });
         });
     </script>

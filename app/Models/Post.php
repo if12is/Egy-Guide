@@ -8,10 +8,12 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use WisdomDiala\Countrypkg\Models\Country;
 use WisdomDiala\Countrypkg\Models\State;
+use Qirolab\Laravel\Reactions\Traits\Reactable;
+use Qirolab\Laravel\Reactions\Contracts\ReactableInterface;
 
-class Post extends Model implements HasMedia
+class Post extends Model implements HasMedia, ReactableInterface
 {
-    use HasFactory, InteractsWithMedia;
+    use HasFactory, InteractsWithMedia, Reactable;
 
     protected $fillable = [
         'title',

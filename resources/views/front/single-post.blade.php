@@ -1,6 +1,6 @@
 @extends('layouts.master-front')
 
-@section('title', 'Home')
+@section('title', 'Post details')
 
 @section('front')
     <div class="d-flex justify-content-center">
@@ -22,9 +22,28 @@
                         <img src="{{ optional($post->user->getFirstMedia('avatars'))->getUrl() ?: asset('assets/img/avatars/unknown-avatar.jpeg') }}"
                             alt="User Avatar">
                         <div class="social-follow">
-                            <a title="gllcollege" href="/gllcollege/" class="social-name">{{ $post->user->name }}</a>
+                            <a title="user name" class="social-name">{{ $post->user->name }}</a>
                             <span class="SPAN_13">•</span>
-                            <button type="button">Follow</button>
+
+                            @if (Auth::check() && Auth::user()->id !== $post->user->id)
+                                @if (auth()->user()->following->contains($post->user->id))
+                                    <form action="{{ route('users.unfollow', $post->user->id) }}" method="post">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button
+                                            class="btn btn-xs btn rounded-pill btn-outline-primary waves-effect {{ $post->user->id == Auth::id() ? 'd-none' : '' }}"
+                                            type="submit"><i class="ti ti-user-check me-1"></i> Unfollow</button>
+                                    </form>
+                                @else
+                                    <form action="{{ route('users.follow', $post->user->id) }}" method="post">
+                                        @csrf
+                                        <button
+                                            class="btn btn-xs btn rounded-pill btn-outline-primary waves-effect {{ $post->user->id == Auth::id() ? 'd-none' : '' }}"
+                                            type="submit"> <i class="ti-xs me-1 ti ti-user-plus"></i>Follow</button>
+                                    </form>
+                                @endif
+                            @endif
+
                         </div>
                     </a>
                 </div>

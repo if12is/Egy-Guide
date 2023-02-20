@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use WisdomDiala\Countrypkg\Models\Country;
 use WisdomDiala\Countrypkg\Models\State;
+use Qirolab\Laravel\Reactions\Facades\Reactions;
 
 class PostController extends Controller
 {
@@ -152,6 +153,7 @@ class PostController extends Controller
 
         return response()->json($states);
     }
+
     public function getPosts(Request $request)
     {
         $posts = Post::orderBy('created_at', 'DESC')->paginate(5);
@@ -159,4 +161,30 @@ class PostController extends Controller
             'posts' => view('posts', ['posts' => $posts])->render()
         ]);
     }
+
+    public function addReaction(Request $request)
+    {
+        $postId = $request->input('post_id');
+        $reactionName = $request->input('reaction');
+
+        $post = Post::find($postId);
+        $post->toggleReaction('like', auth()->user());
+        $reactionCount = $post->reactions()->count();
+
+        return response()->json(['count' => $reactionCount]);
+    }
+
+    // public function likeCount(Request $request)
+    // {
+    //     $post = Post::find($request->post_id);
+    //     $post->reactTo($request->reaction);
+
+    //     $likeCount = $post->reactions()
+    //         ->where('name', 'type')
+    //         ->count();
+
+    //     return response()->json([
+    //         'like_count' => $likeCount
+    //     ]);
+    // }
 }

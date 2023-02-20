@@ -1,6 +1,6 @@
 @extends('layouts.master-front')
 
-@section('title', 'Home-My Profile')
+@section('title', 'Account Settings-Account')
 @section('front')
     <!-- Content -->
 

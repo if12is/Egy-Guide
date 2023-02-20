@@ -13,8 +13,9 @@ use App\Http\Controllers\Front\SettingController;
 
 use App\Http\Controllers\Front\UserRelationshipController;
 use App\Http\Controllers\HomeController;
+use App\Models\Post;
 use App\Models\UserRelationship;
-
+use Flasher\Laravel\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -67,9 +68,6 @@ Route::prefix('/')->middleware(['auth'])->group(function () {
     Route::post('/home/setting', [SettingController::class, 'update'])->name('home.setting-update');
 
 
-    // Route::post('/users/{id}/follow', [UserRelationshipController::class, 'follow'])->name('users.follow');
-    // Route::post('/users/{id}/unfollow', [UserRelationshipController::class, 'unfollow'])->name('users.unfollow');
-
     Route::post('/users/{user}/follow', [UserRelationshipController::class, 'store'])->name('users.follow');
     Route::delete('/users/{user}/unfollow', [UserRelationshipController::class, 'destroy'])->name('users.unfollow');
 
@@ -77,6 +75,10 @@ Route::prefix('/')->middleware(['auth'])->group(function () {
     Route::post('/comments/{comment}/update',  [CommentController::class, 'update'])->name('comments.update');
     Route::post('/comments/{comment}/delete',  [CommentController::class, 'destroy'])->name('comments.destroy');
     Route::post('reply',  [CommentController::class, 'store_reply'])->name('reply.store');
+
+    Route::post('/post/reaction', [PostController::class, 'addReaction'])->name('post.reaction');
+    // Route::post('/like', [PostController::class, 'likeCount']);
+
     // Route::get('comments/show',  [HomeController::class, 'show_comment'])->name('comments.show');
 
 

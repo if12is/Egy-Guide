@@ -9,10 +9,12 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Qirolab\Laravel\Reactions\Traits\Reacts;
+use Qirolab\Laravel\Reactions\Contracts\ReactsInterface;
 
-class User extends Authenticatable implements HasMedia
+class User extends Authenticatable implements HasMedia, ReactsInterface
 {
-    use HasApiTokens, HasFactory, Notifiable, InteractsWithMedia;
+    use HasApiTokens, HasFactory, Notifiable, InteractsWithMedia, Reacts;
 
     /**
      * The attributes that are mass assignable.
