@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use WisdomDiala\Countrypkg\Models\Country;
 use WisdomDiala\Countrypkg\Models\State;
 use Qirolab\Laravel\Reactions\Facades\Reactions;
+use Qirolab\Laravel\Reactions\Models\Reaction;
 
 class PostController extends Controller
 {
@@ -56,26 +57,26 @@ class PostController extends Controller
 
         if ($request->hasFile('media') && $request->file('media')->isValid()) {
             if (in_array($mimeType, $allowed_video_types)) {
-                $post->addMediaFromRequest('media')
+                $media = $post->addMediaFromRequest('media')
                     ->usingName($post->title)
                     ->toMediaCollection('videos');
             } elseif (in_array($mimeType, $allowed_image_types)) {
-                $post->addMediaFromRequest('media')
+                $media = $post->addMediaFromRequest('media')
                     ->usingName($post->title)
                     ->toMediaCollection('images');
             } else {
                 return redirect()->route('home')->with('error', 'Invalid file type. Only MP4, OGG, MOV, JPG, JPEG , PNG and files are allowed.');
             }
         }
-
+        // return response()->json(['path' => $media->getUrl()]);
         return redirect()->route('home')->with('success', 'Post created successfully');
     }
 
     public function edit($id)
     {
         $post = Post::find($id);
-        $oldImage = $post->getMedia('images')->first(); // Get the old media item
-        $oldVideo = $post->getMedia('videos')->first(); // Get the old media item
+        $oldImage = $post->getMedia('images')->first(); // Get the old image item
+        $oldVideo = $post->getMedia('videos')->first(); // Get the old video item
         $user = Auth::user();
         $countries = Country::all();
         $categories = Category::all();
@@ -169,9 +170,21 @@ class PostController extends Controller
 
         $post = Post::find($postId);
         $post->toggleReaction('like', auth()->user());
+
+        $user_id = Auth::id();
+        // Check if the user has already liked the post
+        $is_liked = Reaction::where('user_id', $user_id)
+            ->where('reactable_id', $postId)
+            ->where('type', 'like')
+            ->exists();
+
+
         $reactionCount = $post->reactions()->count();
 
-        return response()->json(['count' => $reactionCount]);
+        return response()->json([
+            'count' => $reactionCount,
+            'is_liked' => $is_liked
+        ]);
     }
 
     // public function likeCount(Request $request)

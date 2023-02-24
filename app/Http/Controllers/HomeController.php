@@ -48,7 +48,6 @@ class HomeController extends Controller
         $user = User::find($id);
         $countries = Country::all();;
         $posts = Post::orderBy('created_at', 'DESC')->paginate(5);
-
         $categories = Category::all();
 
         $topUsers = User::withCount('posts')

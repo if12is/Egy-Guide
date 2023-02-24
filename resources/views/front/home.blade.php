@@ -1,6 +1,11 @@
 @extends('layouts.master-front')
 
 @section('title', 'Home')
+
+
+@section('style')
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.7.3/plyr.css" />
+@endsection
 @section('front')
 
     @if ($message = Session::get('success'))
@@ -48,8 +53,8 @@
                 <div class="card">
                     <h5 class="card-header text-center">Create a New Post </h5>
                     <div class="card-body">
-                        <form class="needs-validation" action="{{ route('posts.store') }}" enctype="multipart/form-data"
-                            method="post">
+                        <form class="needs-validation" id="PostCreate" action="{{ route('posts.store') }}"
+                            enctype="multipart/form-data" method="post">
                             @csrf
                             <div class="row">
                                 <div class="col mb-3">
@@ -138,6 +143,14 @@
                                 </div>
                             </div>
                             <div class="row">
+                                <div class="progress mx-auto my-2" style="display:none">
+                                    <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0"
+                                        aria-valuemax="100" style="width: 0%">
+                                        <span class="sr-only">0% Complete</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
                                 <div class="col-12">
                                     <button type="submit"
                                         class="btn btn-primary waves-effect waves-light">Submit</button>
@@ -199,12 +212,13 @@
                             <img src="{{ $post->getFirstMediaUrl('images') }}" class="post-image"
                                 alt="{{ $post->title }}">
                         @elseif ($post->hasMedia('videos'))
-                            <video controls="controls" style="width: -webkit-fill-available; max-height: 504px;">
+                            <video id="player" playsinline controls
+                                style="width: -webkit-fill-available; max-height: 504px;">
                                 <source src="{{ $post->getFirstMediaUrl('videos') }}" type="{{ $post->mime_type }}">
                             </video>
                         @endif
                         <div class="post-content">
-                            <div class="reaction-wrapper">
+                            {{-- <div class="reaction-wrapper">
                                 <span id="heart">
                                     <svg xmlns="http://www.w3.org/2000/svg"
                                         class="icon like_heart icon-tabler icon-tabler-heart-filled" width="24"
@@ -220,23 +234,12 @@
                                 <i class="ti ti-heart-off ti-lg ti-flashing-hover" id="dislike"></i>
                                 <span class="speace"></span>
                                 <i class="ti ti-message-circle-2 ti-lg scaleX-n1 ti-burst-hover" id="iconComment"></i>
-                                {{-- <div>
-                                    @foreach ($post->reactions as $reaction)
-                                        <div>
-                                            <img src="{{ Reactions::getReactionByKey($reaction->name)->image }}"
-                                                alt="{{ $reaction->name }}">
-                                            <span>{{ $reaction->count }}</span>
-                                        </div>
-                                    @endforeach
-                                </div> --}}
-                            </div>
-                            <button class="reaction-btn" data-post-id="{{ $post->id }}" data-reaction="like">
-                                <i class="fa fa-heart-o"></i> Like
-                            </button>
-                            <span class="like-count" data-post-id="{{ $post->id }}">Likes:
-                                {{ $post->reactions()->count('reactable_id') }}</span>
 
-                            <p class="likes">1,012 likes</p>
+                            </div> --}}
+
+                            @include('front.like-sys')
+                            <p class="likes like-count-num" id="like-count-num" data-post-id="{{ $post->id }}">
+                                {{ $post->reactions()->count() }} Likes</p>
                             <div class="filter">
                                 <span class="badge rounded-pill bg-label-primary">#{{ $post->category->name }}</span>
                                 <span class="badge rounded-pill bg-label-info">#{{ $post->state->name }}</span>
@@ -289,10 +292,11 @@
 @endsection
 
 @section('script')
+    <script src="https://cdn.plyr.io/3.7.3/plyr.polyfilled.js"></script>
+    {{-- load more --}}
     <script>
         $(document).ready(function() {
             var page = 1;
-
             $('#load-more-btn').click(function() {
                 page++;
 
@@ -313,47 +317,12 @@
             });
         });
     </script>
-    <script>
-        $(document).ready(function() {
-            $('.reaction-btn').click(function() {
-                var postId = $(this).data('post-id');
-                var reaction = $(this).data('reaction');
-
-                $.ajax({
-                    url: "{{ route('post.reaction') }}",
-                    type: "POST",
-                    data: {
-                        post_id: postId,
-                        reaction: reaction,
-                    },
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    success: function(response) {
-                        var count = response.count;
-                        $(this).text('Liked (' + count + ')');
-
-                        // var count = response.count;
-                        // var postId = response.post_id;
-
-                        // // Find the element that shows the reaction count for this post
-                        // var reactionCountEl = $('span[data-post-id="' + postId + '"]');
-
-                        // // Update the text of the element with the new reaction count
-                        // reactionCountEl.text(count);
-                    },
-                    error: function(response) {
-                        console.log(response.responseText);
-                    }
-                });
-            });
-        });
-    </script>
+    {{-- like toggle --}}
     <script>
         $(document).on('click', '.reaction-btn', function() {
             var button = $(this);
             var postId = button.data('post-id');
-            var likeCountEl = $('span.like-count[data-post-id="' + postId + '"]');
+            var likeCount = $('p#like-count-num[data-post-id="' + postId + '"]');
 
             $.ajax({
                 url: "{{ route('post.reaction') }}",
@@ -364,19 +333,62 @@
                     _token: $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function(response) {
-                    likeCountEl.text('Likes: ' + response.like_count);
+                    likeCount.text(response.count + ' Likes');
 
                     if (response.is_liked) {
                         button.addClass('liked');
-                        button.find('i').removeClass('fa-heart-o').addClass('fa-heart');
+                        button.removeClass('btn rounded-pill btn-outline-secondary waves-effect')
+                            .addClass(
+                                'btn rounded-pill btn-outline-youtube waves-effect');
+                        button.find('i').removeClass('fa-heart-o').addClass('fa-heart mx-1')
                     } else {
                         button.removeClass('liked');
+                        button.removeClass('btn rounded-pill btn-outline-youtube waves-effect')
+                            .addClass(
+                                'btn rounded-pill btn-outline-secondary waves-effect');
                         button.find('i').removeClass('fa-heart').addClass('fa-heart-o');
                     }
                 },
                 error: function(xhr) {
                     console.log(xhr.responseText);
                 }
+            });
+        });
+    </script>
+    {{-- bar process on uploud --}}
+    <script>
+        $(document).ready(function() {
+            $('#PostCreate').submit(function(e) {
+                e.preventDefault();
+                var formData = new FormData($(this)[0]);
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: $(this).attr('method'),
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    xhr: function() {
+                        var xhr = new window.XMLHttpRequest();
+                        xhr.upload.addEventListener("progress", function(evt) {
+                            if (evt.lengthComputable) {
+                                var percentComplete = evt.loaded / evt.total;
+                                percentComplete = parseInt(percentComplete * 100);
+                                $('.progress').show();
+                                $('.progress-bar').width(percentComplete + '%');
+                                $('.sr-only').text(percentComplete + '% Complete');
+                            }
+                        }, false);
+                        return xhr;
+                    },
+                    success: function(data) {
+                        // handle success
+                        var path = data.path;
+                    },
+                    error: function(data) {
+                        // handle error
+                        var errorMessage = data.responseText;
+                    }
+                });
             });
         });
     </script>

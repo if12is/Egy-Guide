@@ -44,7 +44,7 @@
                                 @if (Auth::check() && Auth::user()->id !== $user->id)
                                     @if (auth()->user()->following->contains($user->id))
                                         <form action="{{ route('users.unfollow', $user->id) }}" method="post">
-                                            @csrf
+                                          @csrf
                                             @method('DELETE')
                                             <button
                                                 class="btn btn-primary  {{ $user->id == Auth::id() ? 'd-none' : '' }}"

@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\DashboardController;
-
+use App\Http\Controllers\Front\CategoryController;
 use App\Http\Controllers\Front\CommentController;
 
 use App\Http\Controllers\Front\CountriesController;
@@ -77,6 +77,10 @@ Route::prefix('/')->middleware(['auth'])->group(function () {
     Route::post('reply',  [CommentController::class, 'store_reply'])->name('reply.store');
 
     Route::post('/post/reaction', [PostController::class, 'addReaction'])->name('post.reaction');
+
+    Route::get('/categories', [CategoryController::class, 'index'])->name('categories.all');
+    Route::get('/categories/{id}/posts', [CategoryController::class, 'showCategoryPosts'])->name('category.posts');
+
     // Route::post('/like', [PostController::class, 'likeCount']);
 
     // Route::get('comments/show',  [HomeController::class, 'show_comment'])->name('comments.show');

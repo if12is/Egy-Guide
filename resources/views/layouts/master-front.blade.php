@@ -16,6 +16,7 @@
     <!-- Favicon -->
     <link rel="icon" sizes="16x16" type="image/x-icon" href="{{ asset('images/EG2.png') }}" />
 
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

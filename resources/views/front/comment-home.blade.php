@@ -23,7 +23,7 @@
             <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse"
                 data-bs-target="#accordionWithIcon-2{{ $post->id }}" aria-expanded="false">
                 <i class="me-2 ti ti-message-2 ti-xs"></i>
-                comments
+                comments ({{ $post->comments()->count() }})
             </button>
         </h2>
         <div id="accordionWithIcon-2{{ $post->id }}" class="accordion-collapse collapse" style="">

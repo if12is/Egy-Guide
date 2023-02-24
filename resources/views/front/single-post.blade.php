@@ -3,6 +3,7 @@
 @section('title', 'Post details')
 
 @section('front')
+
     <div class="d-flex justify-content-center">
         <article class="social-article">
             <div class="social-left-col">
@@ -65,6 +66,7 @@
             </div>
         </article>
     </div>
+
 @endsection
 
 @section('script')

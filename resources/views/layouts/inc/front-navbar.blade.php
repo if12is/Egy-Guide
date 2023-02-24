@@ -29,9 +29,10 @@
                        </a>
                    </li>
                    <!-- /Search -->
+
                    {{-- categry --}}
                    <li class="nav-item  me-2 me-xl-0">
-                       <a class="nav-link " href="javascript:void(0);">
+                       <a class="nav-link " href="{{ route('categories.all') }}">
                            <i class="ti ti-category ti-md"></i>
                        </a>
                    </li>
