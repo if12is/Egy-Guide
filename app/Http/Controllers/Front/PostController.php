@@ -8,6 +8,7 @@ use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use WisdomDiala\Countrypkg\Models\Country;
 use WisdomDiala\Countrypkg\Models\State;
 use Qirolab\Laravel\Reactions\Facades\Reactions;
@@ -78,7 +79,7 @@ class PostController extends Controller
         $oldImage = $post->getMedia('images')->first(); // Get the old image item
         $oldVideo = $post->getMedia('videos')->first(); // Get the old video item
         $user = Auth::user();
-        $countries = Country::all();
+        $countries = Country::where('id', 63)->get();
         $categories = Category::all();
 
         if (empty($post->user->id)) {
@@ -187,17 +188,23 @@ class PostController extends Controller
         ]);
     }
 
-    // public function likeCount(Request $request)
-    // {
-    //     $post = Post::find($request->post_id);
-    //     $post->reactTo($request->reaction);
 
-    //     $likeCount = $post->reactions()
-    //         ->where('name', 'type')
-    //         ->count();
+    public function search(Request $request)
+    {
+        // Get the search query from the user
+        $searchQuery = $request->input('search');
+        // Retrieve the posts from the database based on the search query
 
-    //     return response()->json([
-    //         'like_count' => $likeCount
-    //     ]);
-    // }
+        $posts = Post::where('title', 'like', "%$searchQuery%")
+            ->orWhere('description', 'like', "%$searchQuery%")
+            ->orWhere('state_id', 'like', "%$searchQuery%")
+            ->get();
+        // $posts = Post::whereHas('category', function ($query) use ($searchQuery) {
+        //     $query->where('name', 'like', "%$searchQuery%");
+        // })->get();
+
+
+        // Display the search results
+        return view('front.search', ['posts' => $posts, 'query' => $searchQuery]);
+    }
 }

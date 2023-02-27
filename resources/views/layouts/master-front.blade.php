@@ -18,6 +18,9 @@
 
 
     <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal&display=swap" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -99,25 +102,23 @@
     </div>
     <!-- / Layout wrapper -->
 
-
     <!-- Core JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"
-        integrity="sha512-STof4xm1wgkfm7heWqFJVn58Hm3EtS31XFaagaa8VMReCXAkQnJZ+jEy8PCC/iT18dFy95WcExNHFTqLyp72eQ=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    integrity="sha512-STof4xm1wgkfm7heWqFJVn58Hm3EtS31XFaagaa8VMReCXAkQnJZ+jEy8PCC/iT18dFy95WcExNHFTqLyp72eQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <script>
-        $(document).ready(function() {
-            // to hidden cusomizer
-            $('#template-customizer').css('visibility', 'hidden');
-
-            $("#select2Basics").change(function() {
-                let country_id = this.value;
-                $.get("get_states?country=" + country_id, function(data) {
-                    $("#select2Basic").html(data);
-                });
-                // console.log(country_id);
+    $(document).ready(function() {
+        // to hidden cusomizer
+        $('#template-customizer').css('visibility', 'hidden');
+        $("#select2Basics").change(function() {
+            let country_id = this.value;
+            $.get("get_states?country=" + country_id, function(data) {
+                $("#select2Basic").html(data);
             });
+            // console.log(country_id);
         });
+    });
     </script>
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->

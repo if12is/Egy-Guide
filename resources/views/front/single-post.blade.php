@@ -54,14 +54,17 @@
                     </div>
                     <div class="social-icons">
                         <section class="icons-section">
-                            <button class="icons-button"><span class="icon1"></span></button>
-                            <button class="icons-button"><span class="icon2"></span></button>
-                            <button class="icons-button"><span class="icon3"></span></button>
-                            <button class="icons-button"><span class="icon4"></span></button>
+                            @include('front.like-sys')
+                            <div class="filter mx-3">
+                                <span class="badge rounded-pill bg-label-primary">#{{ $post->category->name }}</span>
+                                <span class="badge rounded-pill bg-label-info">#{{ $post->state->name }}</span>
+                            </div>
                         </section>
-                        <div class="likes-wrap"><span>16</span> likes</div>
+                        <div class="likes-wrap likes like-count-num" id="like-count-num"
+                            data-post-id="{{ $post->id }}"><span>{{ $post->reactions()->count() }} </span> likes
+                        </div>
                     </div>
-                    <div class="social-date"><time>April 18</time></div>
+                    <div class="social-date"><time>{{ $post->created_at->diffForHumans() }}</time></div>
                 </div>
             </div>
         </article>
@@ -77,6 +80,45 @@
 
             $('.reply-btn').click(function() {
                 $('.reply-form').toggle();
+            });
+        });
+    </script>
+
+    {{-- like toggle --}}
+    <script>
+        $(document).on('click', '.reaction-btn', function() {
+            var button = $(this);
+            var postId = button.data('post-id');
+            var likeCount = $('div#like-count-num[data-post-id="' + postId + '"]');
+
+            $.ajax({
+                url: "{{ route('post.reaction') }}",
+                method: 'post',
+                data: {
+                    post_id: postId,
+                    reaction: 'like',
+                    _token: $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
+                    likeCount.text(response.count + ' Likes');
+
+                    if (response.is_liked) {
+                        button.addClass('liked');
+                        button.removeClass('btn rounded-pill btn-outline-secondary waves-effect')
+                            .addClass(
+                                'btn rounded-pill btn-outline-youtube waves-effect');
+                        button.find('i').removeClass('fa-heart-o').addClass('fa-heart mx-1');
+                    } else {
+                        button.removeClass('liked');
+                        button.removeClass('btn rounded-pill btn-outline-youtube waves-effect')
+                            .addClass(
+                                'btn rounded-pill btn-outline-secondary waves-effect');
+                        button.find('i').removeClass('fa-heart').addClass('fa-heart-o');
+                    }
+                },
+                error: function(xhr) {
+                    console.log(xhr.responseText);
+                }
             });
         });
     </script>

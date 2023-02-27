@@ -59,6 +59,10 @@
                         <div class="social-icons">
                             <section class="icons-section">
                                 @include('front.like-sys')
+                                <div class="filter mx-3">
+                                    <span class="badge rounded-pill bg-label-primary">#{{ $post->category->name }}</span>
+                                    <span class="badge rounded-pill bg-label-info">#{{ $post->state->name }}</span>
+                                </div>
                                 {{-- <button class="icons-button"><span class="icon1"></span></button>
                                 <button class="icons-button"><span class="icon2"></span></button>
                                 <button class="icons-button"><span class="icon3"></span></button>

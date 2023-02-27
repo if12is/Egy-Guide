@@ -67,6 +67,7 @@ class User extends Authenticatable implements HasMedia, ReactsInterface
         return $this->belongsToMany(User::class, 'user_relationships', 'following_id', 'follower_id');
     }
 
+
     public function follow(User $user)
     {
         $this->following()->attach($user->id);

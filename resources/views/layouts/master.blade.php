@@ -48,6 +48,7 @@
 
     <!-- Page CSS -->
 
+    @yield('style')
     <!-- Helpers -->
     <script src="{{ asset('assets/vendor/js/helpers.js') }}"></script>
 
@@ -130,6 +131,7 @@
     <script src="{{ asset('assets/js/dashboards-analytics.js') }}"></script>
     <script src="{{ asset('assets/js/dashboards-ecommerce.js') }}"></script>
 
+    @yield('script')
 </body>
 
 </html>

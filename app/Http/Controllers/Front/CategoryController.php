@@ -25,6 +25,7 @@ class CategoryController extends Controller
             $query->orderBy('created_at', 'desc');
         }])->find($categoryId);
 
+        // dd($category);
         $posts = $category->posts()->paginate(5);
         return view('front.single-category', ['category' => $category, 'posts' => $posts]);
     }

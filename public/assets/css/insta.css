@@ -22,8 +22,8 @@
     grid-gap: 30px;
     justify-content: space-between;
     align-content: space-between;
-    justify-items: end;
-    align-items: flex-start;
+    justify-items: center;
+    align-items: start;
 }
 
 .left-col {
@@ -525,9 +525,9 @@ span.speace {
 }
 .social-right-col .icons-section {
     display: flex;
-    height: 45px;
+    /* height: 45px; */
     position: relative;
-    align-items: stretch;
+    align-items: center;
     flex: 0 0 auto;
     padding: 4px 16px 0px;
 }

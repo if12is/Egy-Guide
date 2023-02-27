@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Front\CategoryController;
 use App\Http\Controllers\Front\CommentController;
 
@@ -81,6 +82,11 @@ Route::prefix('/')->middleware(['auth'])->group(function () {
     Route::get('/categories', [CategoryController::class, 'index'])->name('categories.all');
     Route::get('/categories/{id}/posts', [CategoryController::class, 'showCategoryPosts'])->name('category.posts');
 
+    Route::get('/cities', [CountriesController::class, 'index'])->name('cities.all');
+    Route::get('/cities/{id}/posts', [CountriesController::class, 'showCityPosts'])->name('city.posts');
+
+    Route::get('/search', [PostController::class, 'search'])->name('search');
+
     // Route::post('/like', [PostController::class, 'likeCount']);
 
     // Route::get('comments/show',  [HomeController::class, 'show_comment'])->name('comments.show');
@@ -94,7 +100,7 @@ Route::prefix('/')->middleware(['auth'])->group(function () {
 Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
-    Route::get('/dashboard/page1', [DashboardController::class, 'page1'])->name('admin.dashboardpage1');
+    Route::get('/dashboard/usres', [UserController::class, 'index'])->name('admin.dashboardpage1');
     Route::get('/dashboard/myprofile', [DashboardController::class, 'myprofile'])->name('admin.myprofile');
     Route::get('/dashboard/setting', [DashboardController::class, 'setting'])->name('admin.setting');
 });

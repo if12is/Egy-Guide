@@ -222,7 +222,8 @@
                                                                     <!--/ Icon Dropdown -->
                                                                 </span>
                                                             </div>
-                                                            <p>
+                                                            <p
+                                                                style="font-family: 'Tajawal', sans-serif; font-weight:600;">
                                                                 {{ $child->body }}
                                                             </p>
                                                             <hr>

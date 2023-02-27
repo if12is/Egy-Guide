@@ -11,6 +11,7 @@
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
         "laravel/ui": "^4.1",
+        "php-flasher/flasher-laravel": "^1.13",
         "qirolab/laravel-reactions": "^2.7",
         "spatie/laravel-medialibrary": "^10.7",
         "wisdom-diala/countrypkg-laravel": "^1.0"

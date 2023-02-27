@@ -165,60 +165,61 @@
         <div class="wrapper my-2">
             <div class="left-col" id="posts">
                 {{-- post  --}}
-                @foreach ($posts as $post)
-                    <div class="post card mb-4">
-                        <div class="info">
-                            <div class="user">
-                                <div class="profile-pic">
-                                    <a href="{{ route('home.profile-show', ['id' => $post->user->id]) }}">
-                                        <img src="{{ optional($post->user->getFirstMedia('avatars'))->getUrl() ?: asset('assets/img/avatars/unknown-avatar.jpeg') }}"
-                                            alt="User Avatar">
-                                    </a>
+                @if ($posts->count() > 0)
+                    @foreach ($posts as $post)
+                        <div class="post card mb-4">
+                            <div class="info">
+                                <div class="user">
+                                    <div class="profile-pic">
+                                        <a href="{{ route('home.profile-show', ['id' => $post->user->id]) }}">
+                                            <img src="{{ optional($post->user->getFirstMedia('avatars'))->getUrl() ?: asset('assets/img/avatars/unknown-avatar.jpeg') }}"
+                                                alt="User Avatar">
+                                        </a>
+                                    </div>
+                                    <p class="username">{{ $post->user->name }}</p>
+
                                 </div>
-                                <p class="username">{{ $post->user->name }}</p>
+                                <!-- Icon Dropdown -->
+                                <div class="demo-inline-space {{ $post->user->id == Auth::user()->id ? '' : 'd-none' }}">
+                                    <div class="btn-group">
+                                        <button type="button"
+                                            class="btn btn-primary btn-icon rounded-pill dropdown-toggle hide-arrow"
+                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="ti ti-dots-vertical"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            <li><a class="dropdown-item" href="{{ route('posts.edit', $post->id) }}">Edit
+                                                    <i class="ti ti-edit  mx-2"></i></a> </li>
+                                            <li>
+                                                <hr class="dropdown-divider" />
+                                            </li>
+                                            <li>
+                                                <form action="{{ route('posts.destroy', $post->id) }}" method="post">
+                                                    @csrf
+                                                    <button class="dropdown-item" type="submit">Delete
+                                                        <i class="ti ti-trash mx-2"></i> </button>
+                                                </form>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <!--/ Icon Dropdown -->
 
                             </div>
-                            <!-- Icon Dropdown -->
-                            <div class="demo-inline-space {{ $post->user->id == Auth::user()->id ? '' : 'd-none' }}">
-                                <div class="btn-group">
-                                    <button type="button"
-                                        class="btn btn-primary btn-icon rounded-pill dropdown-toggle hide-arrow"
-                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i class="ti ti-dots-vertical"></i>
-                                    </button>
-                                    <ul class="dropdown-menu dropdown-menu-end">
-                                        <li><a class="dropdown-item" href="{{ route('posts.edit', $post->id) }}">Edit <i
-                                                    class="ti ti-edit  mx-2"></i></a> </li>
-                                        <li>
-                                            <hr class="dropdown-divider" />
-                                        </li>
-                                        <li>
-                                            <form action="{{ route('posts.destroy', $post->id) }}" method="post">
-                                                @csrf
-                                                <button class="dropdown-item" type="submit">Delete
-                                                    <i class="ti ti-trash mx-2"></i> </button>
-                                            </form>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <!--/ Icon Dropdown -->
-
-                        </div>
-                        <a href="{{ route('posts.show', ['id' => $post->id]) }}">
-                            <p class="mx-4 text-secondary">{{ $post->title }}</p>
-                        </a>
-                        @if ($post->hasMedia('images'))
-                            <img src="{{ $post->getFirstMediaUrl('images') }}" class="post-image"
-                                alt="{{ $post->title }}">
-                        @elseif ($post->hasMedia('videos'))
-                            <video id="player" playsinline controls
-                                style="width: -webkit-fill-available; max-height: 504px;">
-                                <source src="{{ $post->getFirstMediaUrl('videos') }}" type="{{ $post->mime_type }}">
-                            </video>
-                        @endif
-                        <div class="post-content">
-                            {{-- <div class="reaction-wrapper">
+                            <a href="{{ route('posts.show', ['id' => $post->id]) }}">
+                                <p class="mx-4 text-secondary">{{ $post->title }}</p>
+                            </a>
+                            @if ($post->hasMedia('images'))
+                                <img src="{{ $post->getFirstMediaUrl('images') }}" class="post-image"
+                                    alt="{{ $post->title }}">
+                            @elseif ($post->hasMedia('videos'))
+                                <video id="player" playsinline controls
+                                    style="width: -webkit-fill-available; max-height: 504px;">
+                                    <source src="{{ $post->getFirstMediaUrl('videos') }}" type="{{ $post->mime_type }}">
+                                </video>
+                            @endif
+                            <div class="post-content">
+                                {{-- <div class="reaction-wrapper">
                                 <span id="heart">
                                     <svg xmlns="http://www.w3.org/2000/svg"
                                         class="icon like_heart icon-tabler icon-tabler-heart-filled" width="24"
@@ -237,24 +238,129 @@
 
                             </div> --}}
 
-                            @include('front.like-sys')
-                            <p class="likes like-count-num" id="like-count-num" data-post-id="{{ $post->id }}">
-                                {{ $post->reactions()->count() }} Likes</p>
-                            <div class="filter">
-                                <span class="badge rounded-pill bg-label-primary">#{{ $post->category->name }}</span>
-                                <span class="badge rounded-pill bg-label-info">#{{ $post->state->name }}</span>
+                                @include('front.like-sys')
+                                <p class="likes like-count-num" id="like-count-num" data-post-id="{{ $post->id }}">
+                                    {{ $post->reactions()->count() }} Likes</p>
+                                <div class="filter">
+                                    <span class="badge rounded-pill bg-label-primary">#{{ $post->category->name }}</span>
+                                    <span class="badge rounded-pill bg-label-info">#{{ $post->state->name }}</span>
+                                </div>
+                                <p class="description">
+                                    <span><strong> {{ $post->user->name }}</strong> </span> {{ $post->description }}
+                                </p>
+                                <p class="post-time">{{ $post->created_at->diffForHumans() }}</p>
+
+
                             </div>
-                            <p class="description">
-                                <span><strong> {{ $post->user->name }}</strong> </span> {{ $post->description }}
-                            </p>
-                            <p class="post-time">{{ $post->created_at->diffForHumans() }}</p>
-
-
+                            {{-- iclude comment page --}}
+                            @include('front.comment-home')
                         </div>
-                        {{-- iclude comment page --}}
-                        @include('front.comment-home')
+                    @endforeach
+                @else
+                    @foreach ($posts_not_follow_yet as $post)
+                        <div class="post card mb-4">
+                            <div class="info">
+                                <div class="user">
+                                    <div class="profile-pic">
+                                        <a href="{{ route('home.profile-show', ['id' => $post->user->id]) }}">
+                                            <img src="{{ optional($post->user->getFirstMedia('avatars'))->getUrl() ?: asset('assets/img/avatars/unknown-avatar.jpeg') }}"
+                                                alt="User Avatar">
+                                        </a>
+                                    </div>
+                                    <p class="username">{{ $post->user->name }}</p>
+
+                                </div>
+                                <!-- Icon Dropdown -->
+                                <div class="demo-inline-space {{ $post->user->id == Auth::user()->id ? '' : 'd-none' }}">
+                                    <div class="btn-group">
+                                        <button type="button"
+                                            class="btn btn-primary btn-icon rounded-pill dropdown-toggle hide-arrow"
+                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="ti ti-dots-vertical"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            <li><a class="dropdown-item" href="{{ route('posts.edit', $post->id) }}">Edit
+                                                    <i class="ti ti-edit  mx-2"></i></a> </li>
+                                            <li>
+                                                <hr class="dropdown-divider" />
+                                            </li>
+                                            <li>
+                                                <form action="{{ route('posts.destroy', $post->id) }}" method="post">
+                                                    @csrf
+                                                    <button class="dropdown-item" type="submit">Delete
+                                                        <i class="ti ti-trash mx-2"></i> </button>
+                                                </form>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <!--/ Icon Dropdown -->
+
+                            </div>
+                            <a href="{{ route('posts.show', ['id' => $post->id]) }}">
+                                <p class="mx-4 text-secondary">{{ $post->title }}</p>
+                            </a>
+                            @if ($post->hasMedia('images'))
+                                <img src="{{ $post->getFirstMediaUrl('images') }}" class="post-image"
+                                    alt="{{ $post->title }}">
+                            @elseif ($post->hasMedia('videos'))
+                                <video id="player" playsinline controls
+                                    style="width: -webkit-fill-available; max-height: 504px;">
+                                    <source src="{{ $post->getFirstMediaUrl('videos') }}" type="{{ $post->mime_type }}">
+                                </video>
+                            @endif
+                            <div class="post-content">
+                                {{-- <div class="reaction-wrapper">
+                                <span id="heart">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                        class="icon like_heart icon-tabler icon-tabler-heart-filled" width="24"
+                                        height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                        fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path
+                                            d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572"
+                                            fill="currentColor"></path>
+                                    </svg>
+                                </span>
+
+                                <i class="ti ti-heart-off ti-lg ti-flashing-hover" id="dislike"></i>
+                                <span class="speace"></span>
+                                <i class="ti ti-message-circle-2 ti-lg scaleX-n1 ti-burst-hover" id="iconComment"></i>
+
+                            </div> --}}
+
+                                @include('front.like-sys')
+                                <p class="likes like-count-num" id="like-count-num" data-post-id="{{ $post->id }}">
+                                    {{ $post->reactions()->count() }} Likes</p>
+                                <div class="filter">
+                                    <span class="badge rounded-pill bg-label-primary">#{{ $post->category->name }}</span>
+                                    <span class="badge rounded-pill bg-label-info">#{{ $post->state->name }}</span>
+                                </div>
+                                <p class="description">
+                                    <span><strong> {{ $post->user->name }}</strong> </span> {{ $post->description }}
+                                </p>
+                                <p class="post-time">{{ $post->created_at->diffForHumans() }}</p>
+
+
+                            </div>
+                            {{-- iclude comment page --}}
+                            @include('front.comment-home')
+                        </div>
+                    @endforeach
+                    <div class="col-sm-6 col-lg-6 mb-4 m-auto">
+                        <div class="card bg-info text-white text-center p-3">
+                            <figure class="mb-0">
+                                <blockquote class="blockquote">
+                                    <p>Follow to see more.</p>
+                                </blockquote>
+                                <figcaption class="blockquote-footer mb-0 text-white">
+                                    See more <cite title="Source Title">Enjoy more</cite>
+                                </figcaption>
+                            </figure>
+                        </div>
                     </div>
-                @endforeach
+                @endif
+
                 <div class="py-4">
                     {{ $posts->links('front.pagination') }}
                     <div>

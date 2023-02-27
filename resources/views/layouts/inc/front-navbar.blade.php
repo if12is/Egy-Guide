@@ -361,9 +361,12 @@
 
            <!-- Search Small Screens -->
            <div class="navbar-search-wrapper search-input-wrapper container-xxl d-none">
-               <input type="text" class="form-control search-input border-0" placeholder="Search..."
-                   aria-label="Search..." />
+               <form action="{{ route('search') }}" method="GET">
+                   <input type="text" class="form-control search-input border-0" name="search"
+                       placeholder="Search..." aria-label="Search..." />
+               </form>
                <i class="ti ti-x ti-sm search-toggler cursor-pointer"></i>
+
            </div>
        </div>
    </nav>
