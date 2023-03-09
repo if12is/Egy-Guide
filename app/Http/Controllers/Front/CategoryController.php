@@ -20,7 +20,7 @@ class CategoryController extends Controller
 
     public function showCategoryPosts($categoryId)
     {
-        // $category = Category::with('posts')->find($categoryId);
+
         $category = Category::with(['posts' => function ($query) {
             $query->orderBy('created_at', 'desc');
         }])->find($categoryId);

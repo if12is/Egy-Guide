@@ -120,9 +120,15 @@
                     </a>
                 </li> --}}
                 <li class="menu-item">
-                    <a href="app-calendar.html" class="menu-link">
+                    <a href="{{ route('admin.categories') }}" class="menu-link">
                         <i class="menu-icon tf-icons ti ti-calendar"></i>
                         <div data-i18n="Category">Category</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="{{ route('admin.posts') }}" class="menu-link">
+                        <i class="menu-icon tf-icons ti ti-calendar"></i>
+                        <div data-i18n="Posts">Posts</div>
                     </a>
                 </li>
                 {{--  <li class="menu-item">

@@ -407,7 +407,7 @@
                 page++;
 
                 $.ajax({
-                    url: '/home?page=' + page,
+                    url: "{{ route('getPosts') }}",
                     type: 'get',
                     success: function(data) {
                         $('#posts').append(data.posts);

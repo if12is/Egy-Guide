@@ -102,23 +102,98 @@
     </div>
     <!-- / Layout wrapper -->
 
-    <!-- Core JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"
-    integrity="sha512-STof4xm1wgkfm7heWqFJVn58Hm3EtS31XFaagaa8VMReCXAkQnJZ+jEy8PCC/iT18dFy95WcExNHFTqLyp72eQ=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.17.2/firebase-analytics.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+    https://firebase.google.com/docs/web/setup#available-libraries -->
 
     <script>
-    $(document).ready(function() {
-        // to hidden cusomizer
-        $('#template-customizer').css('visibility', 'hidden');
-        $("#select2Basics").change(function() {
-            let country_id = this.value;
-            $.get("get_states?country=" + country_id, function(data) {
-                $("#select2Basic").html(data);
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyC--YN5wScYUyjV7r2WU9bP4OJvkJaOmk8",
+            authDomain: "egyguide-f80cd.firebaseapp.com",
+            projectId: "egyguide-f80cd",
+            storageBucket: "egyguide-f80cd.appspot.com",
+            messagingSenderId: "622743928295",
+            appId: "1:622743928295:web:498e93e82e02c2aea99142",
+            measurementId: "G-VT7D25KXTR"
+        };
+
+        // // Initialize Firebase
+        // const app = initializeApp(firebaseConfig);
+        // const analytics = getAnalytics(app);
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        const messaging = firebase.messaging();
+
+        function initFirebaseMessagingRegistration() {
+            messaging.requestPermission().then(function () {
+                return messaging.getToken()
+            }).then(function(token) {
+
+                axios.post("{{ route('fcmToken') }}",{
+                    _method:"PATCH",
+                    token
+                }).then(({data})=>{
+                    console.log(data)
+                }).catch(({response:{data}})=>{
+                    console.error(data)
+                })
+
+            }).catch(function (err) {
+                console.log(`Token Error :: ${err}`);
             });
-            // console.log(country_id);
+        }
+
+        initFirebaseMessagingRegistration();
+
+        messaging.onMessage(function({data:{body,title}}){
+            new Notification(title, {body});
         });
-    });
+    </script>
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-analytics.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+          apiKey: "AIzaSyC--YN5wScYUyjV7r2WU9bP4OJvkJaOmk8",
+          authDomain: "egyguide-f80cd.firebaseapp.com",
+          projectId: "egyguide-f80cd",
+          storageBucket: "egyguide-f80cd.appspot.com",
+          messagingSenderId: "622743928295",
+          appId: "1:622743928295:web:498e93e82e02c2aea99142",
+          measurementId: "G-VT7D25KXTR"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+      </script>
+    <!-- Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"
+        integrity="sha512-STof4xm1wgkfm7heWqFJVn58Hm3EtS31XFaagaa8VMReCXAkQnJZ+jEy8PCC/iT18dFy95WcExNHFTqLyp72eQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script>
+        $(document).ready(function() {
+            // to hidden cusomizer
+            $('#template-customizer').css('visibility', 'hidden');
+            $("#select2Basics").change(function() {
+                let country_id = this.value;
+                $.get("get_states?country=" + country_id, function(data) {
+                    $("#select2Basic").html(data);
+                });
+                // console.log(country_id);
+            });
+        });
     </script>
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->

@@ -55,7 +55,6 @@ class HomeController extends Controller
         })->orderBy('created_at', 'DESC')->paginate(5);
 
         $posts_not_follow_yet = Post::inRandomOrder()->limit(10)->get();
-        // dd($posts_not_follow_yet);
 
         $categories = Category::all();
 
@@ -69,15 +68,16 @@ class HomeController extends Controller
         $count = 1;
         return view('front.home', compact('posts', 'posts_not_follow_yet', 'countries', 'usersNotFollowed', 'categories', 'user', 'topUsers', 'count'));
     }
+    public function getPosts()
+    {
+        $followedAccounts = auth()->user()->following;
 
-    // public function show_comment($id)
-    // {
-    //     $post = Post::findOrFail($id);
-    //     $comments = $post->comments()->with('user')->whereNull('parent_id')->get();
+        $posts = Post::whereHas('user', function ($query) use ($followedAccounts) {
+            $query->whereIn('id', $followedAccounts->pluck('id'));
+        })->orderBy('created_at', 'DESC')->paginate(5);
 
-    //     return view('front.home', compact('comments'));
-    // }
-
+        return response()->json($posts);
+    }
 
     public function getStates()
     {
@@ -88,5 +88,20 @@ class HomeController extends Controller
             $option .= '<option value="' . $state->id . '">' . $state->name . '</option>';
         }
         return $option;
+    }
+
+    public function updateToken(Request $request)
+    {
+        try {
+            $request->user()->update(['fcm_token' => $request->token]);
+            return response()->json([
+                'success' => true
+            ]);
+        } catch (\Exception $e) {
+            report($e);
+            return response()->json([
+                'success' => false
+            ], 500);
+        }
     }
 }

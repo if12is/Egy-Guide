@@ -91,7 +91,29 @@
     </div>
     <!-- / Layout wrapper -->
 
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-analytics.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
 
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+          apiKey: "AIzaSyC--YN5wScYUyjV7r2WU9bP4OJvkJaOmk8",
+          authDomain: "egyguide-f80cd.firebaseapp.com",
+          projectId: "egyguide-f80cd",
+          storageBucket: "egyguide-f80cd.appspot.com",
+          messagingSenderId: "622743928295",
+          appId: "1:622743928295:web:498e93e82e02c2aea99142",
+          measurementId: "G-VT7D25KXTR"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+      </script>
     <!-- Core JS -->
 
     {{-- <!-- Main JS -->

@@ -8,6 +8,7 @@ php artisan migrate
 php artisan db:seed
 php artisan g:c
 php artisan g:s all _or_ php artisan g:s Egypt
+php artisan storage:link
 npm install
 npm run dev
 php artisan serve

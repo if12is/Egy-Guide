@@ -22,6 +22,7 @@ class Post extends Model implements HasMedia, ReactableInterface
         'category_id',
         'country_id',
         'state_id',
+        'visible'
     ];
 
     public function registerMediaCollections(): void
@@ -57,5 +58,9 @@ class Post extends Model implements HasMedia, ReactableInterface
     public function comments()
     {
         return $this->hasMany(Comment::class);
+    }
+    public function scopeApproved($query)
+    {
+        return $query->where('visible', false);
     }
 }

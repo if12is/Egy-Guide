@@ -28,7 +28,7 @@ class MainProfileController extends Controller
         $bio = $user->bio;
 
         // $posts = $user->posts;
-        $posts = $user->posts()->where('user_id', $id)->get();
+        $posts = $user->posts()->where('user_id', $id)->orderBy('created_at', 'desc')->get();
 
         $dob = DB::table('bios')->where('user_id', $id)->value('dob');
         $result = $dob ? $dob : 'NULL';
@@ -53,10 +53,6 @@ class MainProfileController extends Controller
         // check if data is valid or not
         $bio = $user->bio;
 
-        // $user_profile = $id;
-        // $user_profile_id = intval($id);
-        // dd($user_profile_id);
-        // $posts = $user->posts;
         $posts = $user->posts()->where('user_id', $id)->get();
 
         $dob = DB::table('bios')->where('user_id', $id)->value('dob');
@@ -68,7 +64,7 @@ class MainProfileController extends Controller
             $dateOfBirth = $user->bio->dob;
             $years = Carbon::parse($dateOfBirth)->age;
         }
-        // // dd($years);
+
         return view('front.profile', compact('user', 'years', 'bio', 'posts'));
     }
 
@@ -95,11 +91,4 @@ class MainProfileController extends Controller
         );
         return redirect()->back()->with('success', 'Bio updated successfully.');
     }
-
-    // public function connections()
-    // {
-    //     $id = Auth::id();
-    //     $user = User::find($id);
-    //     return view('front.connections', compact('user'));
-    // }
 }

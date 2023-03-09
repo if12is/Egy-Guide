@@ -21,7 +21,7 @@ return new class extends Migration
             $table->unsignedBigInteger('state_id');
             $table->string('title');
             $table->text('description');
-            $table->boolean('visible')->default(value: 0);
+            $table->boolean('visible')->default(0);
             $table->softDeletes();
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');

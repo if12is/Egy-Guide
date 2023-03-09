@@ -22,16 +22,12 @@ class CountriesController extends Controller
 
     public function showCityPosts($cityId)
     {
-        // $category = Category::with('posts')->find($cityId);
-        // $city = State::with(['posts' => function ($query) {
-        //     $query->orderBy('created_at', 'desc');
-        // }])->find($cityId);
-        // $city = DB::table('states')->where('id', '=', $cityId)->select('name')->get();
-        $city = State::where('id', '=', $cityId)->select('name')->get();
-        // dd($city);
+
+        $city = State::where('id', '=', $cityId)->get();
+        // dd($city[0]->id);
         $posts = Post::where('state_id', '=', $cityId)->orderBy('state_id', 'desc')->paginate(5);
-        // dd(count($posts));
-        // $posts = $city->posts()->paginate(5);
         return view('front.single-city', ['posts' => $posts, 'city' => $city]);
     }
+
+
 }

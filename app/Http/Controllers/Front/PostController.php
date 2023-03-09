@@ -97,8 +97,6 @@ class PostController extends Controller
     {
         $post = Post::findOrFail($id);
 
-        $oldMedia = $post->getMedia('media')->first(); // Get the old media item
-
         $request->validate([
             'title' => 'required',
             'description' => 'required',
@@ -195,15 +193,24 @@ class PostController extends Controller
         $searchQuery = $request->input('search');
         // Retrieve the posts from the database based on the search query
 
-        $posts = Post::where('title', 'like', "%$searchQuery%")
-            ->orWhere('description', 'like', "%$searchQuery%")
-            ->orWhere('state_id', 'like', "%$searchQuery%")
-            ->get();
+        // $posts = Post::where('title', 'like', "%$searchQuery%")
+        //     ->orWhere('description', 'like', "%$searchQuery%")
+        //     ->orWhere('state_id', 'like', "%$searchQuery%")
+        //     ->get();
+
         // $posts = Post::whereHas('category', function ($query) use ($searchQuery) {
         //     $query->where('name', 'like', "%$searchQuery%");
         // })->get();
+        $posts = Post::with('user', 'country', 'category', 'state')
+            ->where('title', 'like', "%$searchQuery%")
+            ->orWhere('description', 'like', "%$searchQuery%")
+            ->orWhereRelation('user', 'name', 'like', '%' . $searchQuery . '%')
+            ->orWhereRelation('country', 'name', 'like', '%' . $searchQuery . '%')
+            ->orWhereRelation('category', 'name', 'like', '%' . $searchQuery . '%')
+            ->orWhereRelation('state', 'name', 'like', '%' . $searchQuery . '%')
+            ->get();
 
-
+        // dd($posts);
         // Display the search results
         return view('front.search', ['posts' => $posts, 'query' => $searchQuery]);
     }

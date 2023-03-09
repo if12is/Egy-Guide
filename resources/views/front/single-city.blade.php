@@ -6,6 +6,23 @@
 @endsection
 
 @section('front')
+    <div class="row ">
+        <div class="col-md-12">
+            <ul
+                class="nav nav-pills flex-column flex-sm-row mb-4 justify-content-center align-content-center align-items-center">
+                <li class="nav-item">
+                    <a class="nav-link active" href="{{ route('city.posts', $city[0]->id) }}"><i
+                            class="ti-xs ti ti-user-check me-1"></i>
+                        Posts</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('city.roadMap', $city[0]->id) }}"><i
+                            class="ti-xs ti ti-users me-1"></i> Road Map</a>
+                </li>
+
+            </ul>
+        </div>
+    </div>
     <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light"> City /</span> {{ $city[0]->name }}</h4>
     @if (count($posts) > 0)
         @foreach ($posts as $post)

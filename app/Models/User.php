@@ -25,7 +25,8 @@ class User extends Authenticatable implements HasMedia, ReactsInterface
         'name',
         'email',
         'password',
-        'is_admin'
+        'is_admin',
+        'fcm_token'
     ];
 
     /**
@@ -46,6 +47,15 @@ class User extends Authenticatable implements HasMedia, ReactsInterface
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('avatars')
+            ->singleFile()
+            ->useFallbackUrl('assets/img/avatars/unknown-avatar.jpeg')
+            ->useFallbackPath(public_path('assets/img/avatars/unknown-avatar.jpeg'));
+    }
+
     public function posts()
     {
         return $this->hasMany(Post::class, 'user_id', 'id');
@@ -56,7 +66,6 @@ class User extends Authenticatable implements HasMedia, ReactsInterface
         return $this->hasOne(Bio::class, 'user_id', 'id');
     }
 
-
     public function following()
     {
         return $this->belongsToMany(User::class, 'user_relationships', 'follower_id', 'following_id');
@@ -66,7 +75,6 @@ class User extends Authenticatable implements HasMedia, ReactsInterface
     {
         return $this->belongsToMany(User::class, 'user_relationships', 'following_id', 'follower_id');
     }
-
 
     public function follow(User $user)
     {
@@ -81,5 +89,16 @@ class User extends Authenticatable implements HasMedia, ReactsInterface
     public function isFollowing(User $user)
     {
         return $this->following()->where('id', $user->id)->exists();
+    }
+
+    public function postsFromFollowing()
+    {
+
+        // Retrieve the IDs of the users that this user follows
+        $followedIds = $this->following()->pluck('id');
+
+        // Retrieve the posts created by the followed users
+        return Post::whereIn('user_id', $followedIds)->get();
+        // return Post::whereIn('user_id', $this->following()->pluck('id'))->get();
     }
 }

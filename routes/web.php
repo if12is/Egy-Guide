@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminCategoryController;
+use App\Http\Controllers\Admin\AdminPostController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Front\CategoryController;
@@ -10,6 +12,7 @@ use App\Http\Controllers\Front\MainController;
 use App\Http\Controllers\Front\MainProfileController;
 use App\Http\Controllers\Front\PostController;
 use App\Http\Controllers\Front\ProfileController;
+use App\Http\Controllers\Front\RoadMapController;
 use App\Http\Controllers\Front\SettingController;
 
 use App\Http\Controllers\Front\UserRelationshipController;
@@ -43,7 +46,7 @@ Route::prefix('/')->middleware(['auth'])->group(function () {
 
     Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-    Route::get('/home/get', [PostController::class, 'getPosts'])->name('getPosts');
+    Route::get('/home/get', [HomeController::class, 'getPosts'])->name('getPosts');
 
 
     Route::get('/home/myprofile', [MainController::class, 'myprofile'])->name('home.myprofile');
@@ -85,13 +88,18 @@ Route::prefix('/')->middleware(['auth'])->group(function () {
     Route::get('/cities', [CountriesController::class, 'index'])->name('cities.all');
     Route::get('/cities/{id}/posts', [CountriesController::class, 'showCityPosts'])->name('city.posts');
 
+    Route::get('/cities/{id}/road-map', [RoadMapController::class, 'showCityRoadMaps'])->name('city.roadMap');
+    Route::post('/road-map/store', [RoadMapController::class, 'store'])->name('roadmap.store');
+
     Route::get('/search', [PostController::class, 'search'])->name('search');
 
+    Route::patch('/fcm-token', [HomeController::class, 'updateToken'])->name('fcmToken');
+    Route::post('/send-notification', [HomeController::class, 'notification'])->name('notification');
+
+
+
     // Route::post('/like', [PostController::class, 'likeCount']);
-
     // Route::get('comments/show',  [HomeController::class, 'show_comment'])->name('comments.show');
-
-
     // Route::get('/home/posts', [PostController::class, 'index'])->name('posts.index');
     // Route::resource('/home/post', PostController::class);
     // Route::get('/home/posts/create', [PostController::class, 'create'])->name('posts.create');
@@ -101,6 +109,11 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
     Route::get('/dashboard/usres', [UserController::class, 'index'])->name('admin.dashboardpage1');
+    Route::get('/dashboard/posts', [AdminPostController::class, 'index'])->name('admin.posts');
+    Route::post('/dashboard/post/{id}/approved', [AdminPostController::class, 'update'])->name('admin.posts.update');
+    Route::post('/dashboard/post/{id}/delete', [AdminPostController::class, 'destroy'])->name('admin.posts.delete');
+
+    Route::get('/dashboard/categories', [AdminCategoryController::class, 'index'])->name('admin.categories');
     Route::get('/dashboard/myprofile', [DashboardController::class, 'myprofile'])->name('admin.myprofile');
     Route::get('/dashboard/setting', [DashboardController::class, 'setting'])->name('admin.setting');
 });

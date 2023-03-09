@@ -14,18 +14,11 @@ class ProfileController extends Controller
         $this->middleware('auth');
     }
 
-    // public function index()
-    // {
-    //     $id = Auth::id();
-    //     $user = User::find($id);
-    //     return view('layouts.inc.front-navbar', compact('user'));
-    // }
 
     public function edit($id)
     {
         $user = User::find($id);
-        // $user = Auth::user();
-        // return response()->json($id);
+
         if (empty($user->id)) {
             return redirect('/home');
         } else {
@@ -42,10 +35,11 @@ class ProfileController extends Controller
     {
         $user = User::findOrFail($id);
         $request->validate([
-            'name' => 'required',
-            'email' => 'required|email',
-            // 'avatar' => 'required',
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $request->user()->id,
+            'avatar' => 'nullable|image|max:2048',
         ]);
+
         $user->update(array_merge($request->except('user_id', 'avatar'), ['user_id' => Auth::user()->id]));
         // return response()->json($request->all());
 
@@ -57,6 +51,7 @@ class ProfileController extends Controller
         return redirect()->route('home.account-edit', $user->id)
             ->with('success', 'user Data updated successfully');
     }
+
     public function destroy($id)
     {
         User::find($id)->delete();
