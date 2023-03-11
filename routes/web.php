@@ -45,6 +45,13 @@ Route::get('/', function () {
 Route::prefix('/')->middleware(['auth'])->group(function () {
 
     Route::get('/home', [HomeController::class, 'index'])->name('home');
+    // Route::get('/posts', function () {
+    //     return view('front.home');
+    // });
+    // Route::get('/posts', [HomeController::class, 'getArticles'])->name('posts.index');
+
+    // Route::get('/posts', [HomeController::class, 'index'])->name('posts.index');
+    Route::get('/posts/more', [PostController::class, 'more'])->name('posts.more');
 
     Route::get('/home/get', [HomeController::class, 'getPosts'])->name('getPosts');
 

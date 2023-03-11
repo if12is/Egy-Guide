@@ -22,6 +22,41 @@ class PostController extends Controller
         $this->middleware('auth');
     }
 
+
+    public function more(Request $request)
+    {
+        $last_post_id = $request->last_post_id;
+
+
+        $followedAccounts = auth()->user()->following;
+        $user = Auth::user();
+
+        if ($user) {
+            $following = $user->following->pluck('id');
+            $posts = Post::whereIn('user_id', $following)
+                ->where('id', '<', $last_post_id)
+                ->orderBy('created_at', 'desc')
+                ->limit(10)
+                ->get();
+        } else {
+            $posts = Post::where('id', '<', $last_post_id)
+                ->inRandomOrder()
+                ->limit(10)
+                ->get();
+        }
+
+        if ($posts->isEmpty()) {
+            return response()->json([
+                'html' => '',
+                'message' => 'No more posts to display follow to show more ....'
+            ]);
+        }
+
+        return response()->json([
+            'html' => view('front.posts', compact('posts'))->render()
+        ]);
+    }
+
     public function show($id)
     {
         $post = Post::findOrFail($id);
@@ -46,7 +81,6 @@ class PostController extends Controller
         $file = $request->file('media');
         $mimeType = $file->getMimeType();
 
-        // dd($mimeType);
         $post = Post::create([
             'title' => $request->title,
             'description' => $request->description,
@@ -69,7 +103,7 @@ class PostController extends Controller
                 return redirect()->route('home')->with('error', 'Invalid file type. Only MP4, OGG, MOV, JPG, JPEG , PNG and files are allowed.');
             }
         }
-        // return response()->json(['path' => $media->getUrl()]);
+
         return redirect()->route('home')->with('success', 'Post created successfully');
     }
 
@@ -191,16 +225,9 @@ class PostController extends Controller
     {
         // Get the search query from the user
         $searchQuery = $request->input('search');
+
         // Retrieve the posts from the database based on the search query
 
-        // $posts = Post::where('title', 'like', "%$searchQuery%")
-        //     ->orWhere('description', 'like', "%$searchQuery%")
-        //     ->orWhere('state_id', 'like', "%$searchQuery%")
-        //     ->get();
-
-        // $posts = Post::whereHas('category', function ($query) use ($searchQuery) {
-        //     $query->where('name', 'like', "%$searchQuery%");
-        // })->get();
         $posts = Post::with('user', 'country', 'category', 'state')
             ->where('title', 'like', "%$searchQuery%")
             ->orWhere('description', 'like', "%$searchQuery%")
@@ -210,7 +237,6 @@ class PostController extends Controller
             ->orWhereRelation('state', 'name', 'like', '%' . $searchQuery . '%')
             ->get();
 
-        // dd($posts);
         // Display the search results
         return view('front.search', ['posts' => $posts, 'query' => $searchQuery]);
     }

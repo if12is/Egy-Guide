@@ -50,11 +50,13 @@ class HomeController extends Controller
 
         $followedAccounts = auth()->user()->following;
 
-        $posts = Post::whereHas('user', function ($query) use ($followedAccounts) {
-            $query->whereIn('id', $followedAccounts->pluck('id'));
-        })->orderBy('created_at', 'DESC')->paginate(5);
-
-        $posts_not_follow_yet = Post::inRandomOrder()->limit(10)->get();
+        if (count($followedAccounts) > 0) {
+            $posts = Post::whereHas('user', function ($query) use ($followedAccounts) {
+                $query->whereIn('id', $followedAccounts->pluck('id'));
+            })->orderBy('created_at', 'DESC')->paginate(5);
+        } else {
+            $posts = Post::inRandomOrder()->limit(10)->orderBy('created_at', 'DESC')->get();
+        }
 
         $categories = Category::all();
 
@@ -66,7 +68,7 @@ class HomeController extends Controller
 
 
         $count = 1;
-        return view('front.home', compact('posts', 'posts_not_follow_yet', 'countries', 'usersNotFollowed', 'categories', 'user', 'topUsers', 'count'));
+        return view('front.home', compact('posts', 'countries', 'usersNotFollowed', 'categories', 'user', 'topUsers', 'count'));
     }
     public function getPosts()
     {
@@ -78,6 +80,7 @@ class HomeController extends Controller
 
         return response()->json($posts);
     }
+
 
     public function getStates()
     {

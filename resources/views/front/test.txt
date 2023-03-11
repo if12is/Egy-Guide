@@ -1,0 +1,157 @@
+Create a route for creating a comment:
+
+Route::post('/comments', 'CommentController@store');
+
+Create a route for updating a comment:
+
+Route::put('/comments/{id}', 'CommentController@update');
+
+
+Create a route for deleting a comment:
+Route::delete('/comments/{id}', 'CommentController@destroy');
+
+Create a controller named CommentController using the following command:
+php artisan make:controller CommentController
+
+
+// Store a newly created comment in the database.
+public function store(Request $request)
+{
+    $comment = new Comment();
+    $comment->body = $request->input('body');
+    $comment->post_id = $request->input('post_id');
+    $comment->user_id = auth()->id();
+    $comment->save();
+
+    return response()->json(['success' => true, 'comment' => $comment]);
+}
+
+// Update the specified comment in the database.
+public function update(Request $request, $id)
+{
+    $comment = Comment::find($id);
+    $comment->body = $request->input('body');
+    $comment->save();
+
+    return response()->json(['success' => true, 'comment' => $comment]);
+}
+
+// Remove the specified comment from the database.
+public function destroy($id)
+{
+    $comment = Comment::find($id);
+    $comment->delete();
+
+    return response()->json(['success' => true]);
+}
+
+
+
+<!-- Display comments here -->
+<div id="comments-container">
+    @foreach($comments as $comment)
+        <div class="comment" data-id="{{ $comment->id }}">
+            <p>{{ $comment->body }}</p>
+            <div class="actions">
+                <a href="#" class="edit-comment">Edit</a>
+                <a href="#" class="delete-comment">Delete</a>
+            </div>
+        </div>
+    @endforeach
+</div>
+
+<!-- Create comment form -->
+<form id="create-comment-form">
+    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+    <input type="hidden" name="post_id" value="{{ $post->id }}">
+    <textarea name="body"></textarea>
+    <button type="submit">Submit</button>
+</form>
+
+<!-- Edit comment form -->
+<form id="edit-comment-form">
+    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+    <input type="hidden" name="_method" value="PUT">
+    <input type="hidden" name="comment_id">
+    <textarea name="body"></textarea>
+    <button type="submit">Save</button>
+</form>
+
+
+// Create a comment
+$('#create-comment-form').on('submit', function(event) {
+    event.preventDefault();
+
+    $.ajax({
+        url: '/comments',
+        type: 'POST',
+        data: $(this).serialize(),
+        success: function(response) {
+            var comment = response.comment;
+
+            // Create a new comment HTML element and append it to the comments container
+            var newComment = $('<div>').addClass('comment').attr('data-id', comment.id)
+                .append($('<p>').text(comment.body))
+                .append($('<div>').addClass('comment-actions')
+                .append($('<a>').attr('href', '#').addClass('edit-comment').text('Edit'))
+                .append($('<a>').attr('href', '#').addClass('delete-comment').text('Delete')));
+
+            $('#comments-container').append(newComment);
+            $('#create-comment-form textarea').val('');
+        }
+    });
+});
+
+// Edit a comment
+$('#comments-container').on('click', '.edit-comment', function(event) {
+    event.preventDefault();
+
+    var comment = $(this).closest('.comment');
+    var commentId = comment.data('id');
+    var commentBody = comment.find('p').text();
+
+    $('#edit-comment-form textarea').val(commentBody);
+    $('#edit-comment-form input[name=comment_id]').val(commentId);
+});
+
+$('#edit-comment-form').on('submit', function(event) {
+    event.preventDefault();
+
+    var commentId = $(this).find('input[name=comment_id]').val();
+
+    $.ajax({
+        url: '/comments/' + commentId,
+        type: 'PUT',
+        data: $(this).serialize(),
+        success: function(response) {
+            var comment = response.comment;
+
+            // Update the edited comment in the list of comments
+            var editedComment = $('.comment[data-id=' + comment.id + ']');
+            editedComment.find('p').text(comment.body);
+
+            $('#edit-comment-form textarea').val('');
+            $('#edit-comment-form input[name=comment_id]').val('');
+        }
+    });
+});
+
+// Delete a comment
+$('#comments-container').on('click', '.delete-comment', function(event) {
+    event.preventDefault();
+
+    var comment = $(this).closest('.comment');
+    var commentId = comment.data('id');
+
+    $.ajax({
+        url: '/comments/' + commentId,
+        type: 'DELETE',
+        data: {
+            _token: $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function(response) {
+            // Remove the deleted comment from the list of comments
+            comment.remove();
+        }
+    });
+});

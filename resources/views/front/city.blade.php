@@ -27,7 +27,7 @@
         @foreach ($cities as $city)
             <div class="col-md-6 col-xl-4 my-2">
                 <div class="card bg-dark border-0 text-white">
-                    <img class="card-img" src="{{ asset('assets/img/backgrounds/6.jpg') }}" alt="Card image">
+                    <img class="card-img" src="{{ $city->img ?? $city->img }}" alt="Card image" height="300px">
                     <div class="card-img-overlay">
                         <a href="{{ route('city.posts', $city->id) }}">
                             <h5 class="card-title">{{ $city->name }}</h5>
