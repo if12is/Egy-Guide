@@ -22,6 +22,12 @@ class PostController extends Controller
         $this->middleware('auth');
     }
 
+    public function index()
+    {
+        $categories = Category::all();
+        $countries = Country::where('id', 63)->get();;
+        return view('front.create-post', compact('categories', 'countries'));
+    }
 
     public function more(Request $request)
     {

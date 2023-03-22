@@ -41,7 +41,7 @@
         class="template-customizer-theme-css" />
 
     <link rel="stylesheet" href="{{ asset('assets/css/demo.css') }}" />
-
+    <link rel="stylesheet" href="{{ asset('assets/css/insta.css') }}" />
     <!-- Vendors CSS -->
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/node-waves/node-waves.css') }}" />

@@ -25,6 +25,7 @@ class CommentController extends Controller
 
         return back()->with('success', 'Comment added successfully');
     }
+
     public function store_reply(Request $request)
     {
         $request->validate([

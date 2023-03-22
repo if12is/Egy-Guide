@@ -30,6 +30,15 @@
                    </li>
                    <!-- /Search -->
 
+                   <!-- create post -->
+                    <a class="nav-link " href="{{ route('posts.create') }}">
+                    <button type="button" class="btn rounded-pill btn-outline-vimeo waves-effect">
+                        <i class="tf-icons ti ti-plus ti-xs me-1"></i> Upload
+                        </button>
+                    </a>
+
+                   <!-- /create post  -->
+
                    {{-- categry --}}
                    <li class="nav-item  me-2 me-xl-0">
                        <a class="nav-link " href="{{ route('categories.all') }}">

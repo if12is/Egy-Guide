@@ -8,4 +8,14 @@ return [
      */
     'table_name' => 'reactions',
 
+    'reactions' => [
+        'like' => 'Like',
+        'love' => 'Love',
+        'haha' => 'Haha',
+        'wow' => 'Wow',
+        'sad' => 'Sad',
+        'angry' => 'Angry',
+    ],
+
+
 ];

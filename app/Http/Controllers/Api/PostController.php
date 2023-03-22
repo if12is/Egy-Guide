@@ -17,7 +17,7 @@ class PostController extends Controller
      * @return \Illuminate\Http\Response
      * getPostsFromFollowing
      */
-    public function index(Request $request)
+    public function index()
     {
         $followedAccounts = auth()->user()->following;
 
@@ -87,7 +87,7 @@ class PostController extends Controller
         return response()->json([
             'message' => 'Post Created successfully',
             'post' => $post->load('media'),
-        ], 200);
+        ], 201);
     }
     /**
      * Display the specified resource.
@@ -110,12 +110,19 @@ class PostController extends Controller
 
         // Load the comments and likes for this post
         $comments = $post->comments;
+
+        $commentNum = count($post->comments);
+
         $likes = $post->reactions;
+
+        $likeNum = count($post->reactions);
 
         return response()->json([
             'post' => $post,
             'comments' => $comments,
-            'likes' => $likes
+            'count_comments' => $commentNum,
+            'likes' => $likes,
+            'count_likes' => $likeNum
         ]);
     }
 
@@ -129,6 +136,10 @@ class PostController extends Controller
     public function update(Request $request, $id)
     {
         $post = Post::findOrFail($id);
+
+        if (!$post) {
+            return response()->json(['error' => 'Post not found'], Response::HTTP_NOT_FOUND);
+        }
 
         $request->validate([
             'title' => 'required',
@@ -198,7 +209,7 @@ class PostController extends Controller
         }
 
         return response()->json([
-            'message' => 'Unauthorized'
+            'message' => 'Unauthorized Or Post not found'
         ], 401);
     }
 }

@@ -26,7 +26,9 @@
         @foreach ($categories as $category)
             <div class="col-md-6 col-xl-4 my-2">
                 <div class="card bg-dark border-0 text-white">
-                    <img class="card-img" src="{{ asset('assets/img/backgrounds/6.jpg') }}" alt="Card image">
+                    <img class="card-img"
+                        src="{{ optional($category->getFirstMedia('category_image'))->getUrl() ?: asset('assets/img/backgrounds/6.jpg') }}"
+                        alt="{{ $category->name }} Category image" height="300px">
                     <div class="card-img-overlay">
                         <a href="{{ route('category.posts', $category->id) }}">
                             <h5 class="card-title">{{ $category->name }}</h5>

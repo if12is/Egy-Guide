@@ -45,12 +45,7 @@ Route::get('/', function () {
 Route::prefix('/')->middleware(['auth'])->group(function () {
 
     Route::get('/home', [HomeController::class, 'index'])->name('home');
-    // Route::get('/posts', function () {
-    //     return view('front.home');
-    // });
-    // Route::get('/posts', [HomeController::class, 'getArticles'])->name('posts.index');
 
-    // Route::get('/posts', [HomeController::class, 'index'])->name('posts.index');
     Route::get('/posts/more', [PostController::class, 'more'])->name('posts.more');
 
     Route::get('/home/get', [HomeController::class, 'getPosts'])->name('getPosts');
@@ -59,6 +54,7 @@ Route::prefix('/')->middleware(['auth'])->group(function () {
     Route::get('/home/myprofile', [MainController::class, 'myprofile'])->name('home.myprofile');
     Route::get('/home/setting', [MainController::class, 'setting'])->name('home.setting');
 
+    Route::get('/posts/create', [PostController::class, 'index'])->name('posts.create');
     Route::get('/posts/{id}', [PostController::class, 'show'])->name('posts.show');
     Route::post('/home/post/store', [PostController::class, 'store'])->name('posts.store');
     Route::get('/home/post/edit/{id}', [PostController::class, 'edit'])->name('posts.edit');
@@ -115,12 +111,29 @@ Route::prefix('/')->middleware(['auth'])->group(function () {
 Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
-    Route::get('/dashboard/usres', [UserController::class, 'index'])->name('admin.dashboardpage1');
+    // Route::get('/dashboard/usres', [UserController::class, 'index'])->name('admin.dashboardpage1');
+
     Route::get('/dashboard/posts', [AdminPostController::class, 'index'])->name('admin.posts');
-    Route::post('/dashboard/post/{id}/approved', [AdminPostController::class, 'update'])->name('admin.posts.update');
+    Route::post('/dashboard/post/{id}/approved', [AdminPostController::class, 'approved'])->name('admin.posts.update');
     Route::post('/dashboard/post/{id}/delete', [AdminPostController::class, 'destroy'])->name('admin.posts.delete');
+    Route::post('/dashboard/posts/create', [AdminPostController::class, 'store'])->name('admin.posts.create');
+    Route::get('/dashboard/posts/show/{id}', [AdminPostController::class, 'show'])->name('admin.posts.show');
+    Route::get('/dashboard/posts/edit/{id}', [AdminPostController::class, 'edit'])->name('admin.posts.edit');
+    Route::post('/dashboard/posts/update/{id}', [AdminPostController::class, 'update'])->name('admin.posts.update');
+
+
+    Route::get('/dashboard/users', [UserController::class, 'index'])->name('admin.users');
+    Route::post('/dashboard/users/create', [UserController::class, 'store'])->name('admin.users.create');
+    Route::get('/dashboard/users/edit/{id}', [UserController::class, 'edit'])->name('admin.users.edit');
+    Route::post('/dashboard/users/update/{id}', [UserController::class, 'update'])->name('admin.users.update');
+    Route::delete('/dashboard/users/delete/{user}', [UserController::class, 'destroy'])->name('admin.users.destroy');
 
     Route::get('/dashboard/categories', [AdminCategoryController::class, 'index'])->name('admin.categories');
+    Route::post('/dashboard/categories/create', [AdminCategoryController::class, 'store'])->name('admin.categories.create');
+    Route::get('/dashboard/categories/edit/{id}', [AdminCategoryController::class, 'edit'])->name('admin.categories.edit');
+    Route::post('/dashboard/categories/update/{category}', [AdminCategoryController::class, 'update'])->name('admin.categories.update');
+    Route::delete('/dashboard/categories/delete/{category}', [AdminCategoryController::class, 'destroy'])->name('admin.categories.destroy');
+
     Route::get('/dashboard/myprofile', [DashboardController::class, 'myprofile'])->name('admin.myprofile');
     Route::get('/dashboard/setting', [DashboardController::class, 'setting'])->name('admin.setting');
 });

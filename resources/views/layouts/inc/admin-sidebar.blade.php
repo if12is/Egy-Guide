@@ -108,7 +108,7 @@
                     <span class="menu-header-text">Apps &amp; Pages</span>
                 </li>
                 <li class="menu-item">
-                    <a href="{{ route('admin.dashboardpage1') }}" class="menu-link">
+                    <a href="{{ route('admin.users') }}" class="menu-link">
                         <i class="menu-icon tf-icons ti ti-users"></i>
                         <div data-i18n="User">User</div>
                     </a>
@@ -125,6 +125,7 @@
                         <div data-i18n="Category">Category</div>
                     </a>
                 </li>
+
                 <li class="menu-item">
                     <a href="{{ route('admin.posts') }}" class="menu-link">
                         <i class="menu-icon tf-icons ti ti-calendar"></i>
