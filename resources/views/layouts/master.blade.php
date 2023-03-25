@@ -116,11 +116,8 @@
       </script>
     <!-- Core JS -->
 
-    {{-- <!-- Main JS -->
-    <!-- Sweet Alerts 2 JS -->
-    <script src="{{ asset('assets/vendor/libs/sweetalert2/sweetalert2.js') }}" />
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.6.16/dist/sweetalert2.all.min.js"></script>  --}}
+    <!-- Main JS -->
+
 
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->

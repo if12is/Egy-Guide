@@ -62,14 +62,8 @@
     <script src="{{ asset('assets/vendor/js/template-customizer.js') }}"></script>
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="{{ asset('assets/js/config.js') }}"></script>
-
-
-    <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
-    <link href="https://unpkg.com/@webpixels/css/dist/index.css" rel="stylesheet">
     <!-- Scripts -->
-    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    {{-- @vite(['resources/sass/app.scss', 'resources/js/app.js']) --}}
 </head>
 
 <body>
@@ -152,10 +146,11 @@
                 @endauth
             </div>
         @endif
-        <main class="">
+        <main class="py-4">
             @yield('content')
         </main>
     </div>
+
 
 
     <!-- Main JS -->
@@ -190,6 +185,7 @@
     <script src="{{ asset('assets/js/pages-auth.js') }}"></script>
 
     @yield('script')
+</body>
 </body>
 
 </html>
