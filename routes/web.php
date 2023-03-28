@@ -8,6 +8,7 @@ use App\Http\Controllers\Front\CategoryController;
 use App\Http\Controllers\Front\CommentController;
 
 use App\Http\Controllers\Front\CountriesController;
+use App\Http\Controllers\Front\MailController;
 use App\Http\Controllers\Front\MainController;
 use App\Http\Controllers\Front\MainProfileController;
 use App\Http\Controllers\Front\PostController;
@@ -61,6 +62,8 @@ Route::prefix('/')->middleware(['auth'])->group(function () {
     Route::put('/home/post/update/{id}', [PostController::class, 'update'])->name('posts.update');
     Route::post('/home/post/destroy/{id}', [PostController::class, 'destroy'])->name('posts.destroy');
 
+    Route::get('/notification/markAllAsRead', [PostController::class, 'markAllAsRead'])->name('notifications.readAll');
+
     Route::get('/get_states', [HomeController::class, 'getStates']);
     Route::get('/states/{country}', [PostController::class, 'getStates'])->name('states.index');
 
@@ -78,7 +81,7 @@ Route::prefix('/')->middleware(['auth'])->group(function () {
     Route::post('/users/{user}/follow', [UserRelationshipController::class, 'store'])->name('users.follow');
     Route::delete('/users/{user}/unfollow', [UserRelationshipController::class, 'destroy'])->name('users.unfollow');
 
-    Route::post('/comments',  [CommentController::class, 'store'])->name('comments.store');
+    Route::post('/comments/{post_id}',  [CommentController::class, 'store'])->name('comments.store');
     Route::post('/comments/{comment}/update',  [CommentController::class, 'update'])->name('comments.update');
     Route::post('/comments/{comment}/delete',  [CommentController::class, 'destroy'])->name('comments.destroy');
     Route::post('reply',  [CommentController::class, 'store_reply'])->name('reply.store');
@@ -99,6 +102,7 @@ Route::prefix('/')->middleware(['auth'])->group(function () {
     Route::patch('/fcm-token', [HomeController::class, 'updateToken'])->name('fcmToken');
     Route::post('/send-notification', [HomeController::class, 'notification'])->name('notification');
 
+    Route::get('/send-email', [MailController::class, 'sendMail'])->name('send.email');
 
 
     // Route::post('/like', [PostController::class, 'likeCount']);

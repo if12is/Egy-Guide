@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers\Front;
 
+use App\Events\NewPostEvent;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Post;
 use App\Models\User;
+use App\Notifications\NewPostNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
 use WisdomDiala\Countrypkg\Models\Country;
 use WisdomDiala\Countrypkg\Models\State;
 use Qirolab\Laravel\Reactions\Facades\Reactions;
@@ -66,6 +69,11 @@ class PostController extends Controller
     public function show($id)
     {
         $post = Post::findOrFail($id);
+
+        $getNotificationId = DB::table('notifications')->where('data->post_id', $id)->where('notifiable_id', auth()->user()->id)->pluck('id');
+        // update notification as read_at = now()
+        DB::table('notifications')->where('id', $getNotificationId)->update(['read_at' => now()]);
+        // dd($getNotificationId);
         return view('front.single-post', ['post' => $post]);
     }
 
@@ -109,6 +117,10 @@ class PostController extends Controller
                 return redirect()->route('home')->with('error', 'Invalid file type. Only MP4, OGG, MOV, JPG, JPEG , PNG and files are allowed.');
             }
         }
+
+        $img_url = optional(Auth::user()->getFirstMedia('avatars'))->getUrl() ?: asset('assets/img/avatars/unknown-avatar.jpeg');
+
+        event(new NewPostEvent($post, $img_url));
 
         return redirect()->route('home')->with('success', 'Post created successfully');
     }
@@ -186,6 +198,11 @@ class PostController extends Controller
             ->with('success', 'Post deleted successfully');
     }
 
+    public function markAllAsRead()
+    {
+        auth()->user()->unreadNotifications->markAsRead();
+        return redirect()->back();
+    }
 
     public function getStates($country)
     {

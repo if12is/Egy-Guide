@@ -18,11 +18,18 @@ class TestMail extends Mailable
      *
      * @return void
      */
-    public function __construct()
+
+    public $user;
+
+    public function __construct($user)
     {
-        //
+        $this->user = $user;
     }
 
+    public function build()
+    {
+        return $this->view('email.mailTest')->with(['user' => $this->user]);
+    }
     /**
      * Get the message envelope.
      *
@@ -40,12 +47,12 @@ class TestMail extends Mailable
      *
      * @return \Illuminate\Mail\Mailables\Content
      */
-    public function content()
-    {
-        return new Content(
-            view: 'view.name',
-        );
-    }
+    // public function content()
+    // {
+    //     return new Content(
+    //         view: 'email.mailTest',
+    //     );
+    // }
 
     /**
      * Get the attachments for the message.

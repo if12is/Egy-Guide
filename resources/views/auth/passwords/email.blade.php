@@ -1,5 +1,10 @@
 @extends('layouts.app')
 
+
+@section('title', 'Forgot Password? 🔒')
+@section('style')
+
+@endsection
 @section('content')
     <!-- Content -->
     @if (session('status'))

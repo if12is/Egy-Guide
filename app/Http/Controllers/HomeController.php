@@ -34,7 +34,6 @@ class HomeController extends Controller
     {
         $id = Auth::id();
 
-
         // Filter out the users that the authenticated user is already following
         $usersNotFollowed = User::whereNotIn('id', function ($query) use ($id) {
             $query->select('following_id')
@@ -108,67 +107,46 @@ class HomeController extends Controller
             ], 500);
         }
     }
-    // public function getPosts()
+
+
+    // public function getPostsByCategory($id)
     // {
-    //     $posts = Post::orderBy('created_at', 'DESC')->paginate(5);
+    //     $posts = Post::where('category_id', $id)->orderBy('created_at', 'DESC')->paginate(5);
     //     return response()->json($posts);
     // }
-
-    public function getPostsByCategory($id)
-    {
-        $posts = Post::where('category_id', $id)->orderBy('created_at', 'DESC')->paginate(5);
-        return response()->json($posts);
-    }
-
-
-
-
-
-
-
-    public function getPostsByUser($id)
-    {
-        $posts = Post::where('user_id', $id)->orderBy('created_at', 'DESC')->paginate(5);
-        return response()->json($posts);
-    }
-
-    public function getPostsBySearch($search)
-    {
-        $posts = Post::where('title', 'like', '%' . $search . '%')->orderBy('created_at', 'DESC')->paginate(5);
-        return response()->json($posts);
-    }
-
-
-
-
-
-
-
-
-
-    public function getComments($id)
-    {
-        $comments = Comment::where('post_id', $id)->orderBy('created_at', 'DESC')->get();
-        return response()->json($comments);
-    }
-    // Get average runtime of successful runs in seconds
-    public function getAverageRuntime()
-    {
-        $averageRuntime = DB::table('runs')
-            ->where('status', 'success')
-            ->avg('runtime');
-        return response()->json($averageRuntime);
-    }
-    // make controller to get all reactions on post
-    public function getReactions($id)
-    {
-        $reactions = Reaction::where('post_id', $id)->orderBy('created_at', 'DESC')->get();
-        return response()->json($reactions);
-    }
-    // make controller to get all reactions on post
-    public function getReactionsCount($id)
-    {
-        $reactions = Reaction::where('post_id', $id)->orderBy('created_at', 'DESC')->get();
-        return response()->json($reactions);
-    }
+    // public function getPostsByUser($id)
+    // {
+    //     $posts = Post::where('user_id', $id)->orderBy('created_at', 'DESC')->paginate(5);
+    //     return response()->json($posts);
+    // }
+    // public function getPostsBySearch($search)
+    // {
+    //     $posts = Post::where('title', 'like', '%' . $search . '%')->orderBy('created_at', 'DESC')->paginate(5);
+    //     return response()->json($posts);
+    // }
+    // public function getComments($id)
+    // {
+    //     $comments = Comment::where('post_id', $id)->orderBy('created_at', 'DESC')->get();
+    //     return response()->json($comments);
+    // }
+    // // Get average runtime of successful runs in seconds
+    // public function getAverageRuntime()
+    // {
+    //     $averageRuntime = DB::table('runs')
+    //         ->where('status', 'success')
+    //         ->avg('runtime');
+    //     return response()->json($averageRuntime);
+    // }
+    // // make controller to get all reactions on post
+    // public function getReactions($id)
+    // {
+    //     $reactions = Reaction::where('post_id', $id)->orderBy('created_at', 'DESC')->get();
+    //     return response()->json($reactions);
+    // }
+    // // make controller to get all reactions on post
+    // public function getReactionsCount($id)
+    // {
+    //     $reactions = Reaction::where('post_id', $id)->orderBy('created_at', 'DESC')->get();
+    //     return response()->json($reactions);
+    // }
 }

@@ -1,5 +1,5 @@
 <div class="row">
-    <form action="{{ route('comments.store') }}" method="post">
+    <form action="{{ route('comments.store', $post->id) }}" method="post">
         @csrf
 
         <div class="col-11 ">

@@ -31,11 +31,11 @@
                    <!-- /Search -->
 
                    <!-- create post -->
-                    <a class="nav-link " href="{{ route('posts.create') }}">
-                    <button type="button" class="btn rounded-pill btn-outline-vimeo waves-effect">
-                        <i class="tf-icons ti ti-plus ti-xs me-1"></i> Upload
-                        </button>
-                    </a>
+                   <a class="nav-link " href="{{ route('posts.create') }}">
+                       <button type="button" class="btn rounded-pill btn-outline-vimeo waves-effect">
+                           <i class="tf-icons ti ti-plus ti-xs me-1"></i> Upload
+                       </button>
+                   </a>
 
                    <!-- /create post  -->
 
@@ -61,41 +61,157 @@
                        <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);"
                            data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
                            <i class="ti ti-bell ti-md"></i>
-                           <span class="badge bg-danger rounded-pill badge-notifications">5</span>
+                           <span
+                               class="badge bg-danger rounded-pill badge-notifications">{{ count(auth()->user()->unreadNotifications) }}</span>
                        </a>
                        <ul class="dropdown-menu dropdown-menu-end py-0">
                            <li class="dropdown-menu-header border-bottom">
                                <div class="dropdown-header d-flex align-items-center py-3">
                                    <h5 class="text-body mb-0 me-auto">Notification</h5>
-                                   <a href="javascript:void(0)" class="dropdown-notifications-all text-body"
-                                       data-bs-toggle="tooltip" data-bs-placement="top" title="Mark all as read"><i
+                                   <a href="{{ route('notifications.readAll') }}"
+                                       class="dropdown-notifications-all text-body" data-bs-toggle="tooltip"
+                                       data-bs-placement="top" title="Mark all as read"><i
                                            class="ti ti-mail-opened fs-4"></i></a>
                                </div>
                            </li>
                            <li class="dropdown-notifications-list scrollable-container">
                                <ul class="list-group list-group-flush">
-                                   <li class="list-group-item list-group-item-action dropdown-notifications-item">
-                                       <div class="d-flex">
-                                           <div class="flex-shrink-0 me-3">
-                                               <div class="avatar">
-                                                   <img src="../../assets/img/avatars/1.png" alt
-                                                       class="h-auto rounded-circle" />
+                                   <h6 class="dropdown-header text-uppercase">unread notifications</h6>
+                                   {{-- unread notifications --}}
+                                   @foreach (auth()->user()->unreadNotifications as $notification)
+                                       @if ($notification->type == 'App\Notifications\PostCreatedNotification')
+                                           <li
+                                               class="list-group-item list-group-item-action dropdown-notifications-item ">
+                                               <div class="d-flex">
+                                                   <div class="flex-shrink-0 me-3">
+                                                       <div class="avatar">
+                                                           <img src="{{ $notification->data['img_url'] }}" alt
+                                                               class="h-auto rounded-circle" />
+                                                       </div>
+                                                   </div>
+                                                   <div class="flex-grow-1">
+                                                       <h6 class="mb-1 ">{{ $notification->data['user_name'] }}🎉
+                                                           <span class="text-info">
+                                                               create a new post
+                                                           </span>
+                                                       </h6>
+                                                       <a
+                                                           href="{{ route('posts.show', $notification->data['post_id']) }}">
+                                                           <p class="mb-0">{{ $notification->data['post_title'] }}
+                                                           </p>
+                                                       </a>
+                                                       <small
+                                                           class="text-muted">{{ $notification->created_at->diffForHumans() }}</small>
+                                                   </div>
+                                                   <div class="flex-shrink-0 dropdown-notifications-actions">
+                                                       <a href="javascript:void(0)"
+                                                           class="dropdown-notifications-archive"><span
+                                                               class="ti ti-x"></span></a>
+                                                   </div>
                                                </div>
-                                           </div>
-                                           <div class="flex-grow-1">
-                                               <h6 class="mb-1">Congratulation Lettie 🎉</h6>
-                                               <p class="mb-0">Won the monthly best seller gold badge</p>
-                                               <small class="text-muted">1h ago</small>
-                                           </div>
-                                           <div class="flex-shrink-0 dropdown-notifications-actions">
-                                               <a href="javascript:void(0)" class="dropdown-notifications-read"><span
-                                                       class="badge badge-dot"></span></a>
-                                               <a href="javascript:void(0)" class="dropdown-notifications-archive"><span
-                                                       class="ti ti-x"></span></a>
-                                           </div>
-                                       </div>
-                                   </li>
-                                   <li class="list-group-item list-group-item-action dropdown-notifications-item">
+                                           </li>
+                                       @elseif ($notification->type == 'App\Notifications\NewCommentNotification')
+                                           <li
+                                               class="list-group-item list-group-item-action dropdown-notifications-item ">
+                                               <div class="d-flex">
+                                                   <div class="flex-shrink-0 me-3">
+                                                       <div class="avatar">
+                                                           <img src="{{ $notification->data['img_url'] }}" alt
+                                                               class="h-auto rounded-circle" />
+                                                       </div>
+                                                   </div>
+                                                   <div class="flex-grow-1">
+                                                       <h6 class="mb-1 ">{{ $notification->data['user_name'] }}🎉
+                                                           <span class="text-info">
+                                                               comment in your post
+                                                           </span>
+                                                       </h6>
+                                                       <a
+                                                           href="{{ route('posts.show', $notification->data['post_id']) }}">
+                                                           <p class="mb-0">{{ $notification->data['comment_text'] }}
+                                                           </p>
+                                                       </a>
+                                                       <small
+                                                           class="text-muted">{{ $notification->created_at->diffForHumans() }}</small>
+                                                   </div>
+                                                   <div class="flex-shrink-0 dropdown-notifications-actions">
+                                                       <a href="javascript:void(0)"
+                                                           class="dropdown-notifications-archive"><span
+                                                               class="ti ti-x"></span></a>
+                                                   </div>
+                                               </div>
+                                           </li>
+                                       @endif
+                                   @endforeach
+                                   <hr class="dropdown-divider">
+                                   <h6 class="dropdown-header text-uppercase">read notifications</h6>
+                                   {{-- read notifications --}}
+                                   @foreach (auth()->user()->readNotifications as $notification)
+                                       @if ($notification->type == 'App\Notifications\PostCreatedNotification')
+                                           <li
+                                               class="list-group-item list-group-item-action dropdown-notifications-item ">
+                                               <div class="d-flex">
+                                                   <div class="flex-shrink-0 me-3">
+                                                       <div class="avatar">
+                                                           <img src="{{ $notification->data['img_url'] }}" alt
+                                                               class="h-auto rounded-circle" />
+                                                       </div>
+                                                   </div>
+                                                   <div class="flex-grow-1">
+                                                       <h6 class="mb-1 ">{{ $notification->data['user_name'] }}🎉
+                                                           <span class="text-info">
+                                                               create a new post
+                                                           </span>
+                                                       </h6>
+                                                       <a
+                                                           href="{{ route('posts.show', $notification->data['post_id']) }}">
+                                                           <p class="mb-0">{{ $notification->data['post_title'] }}
+                                                           </p>
+                                                       </a>
+                                                       <small
+                                                           class="text-muted">{{ $notification->created_at->diffForHumans() }}</small>
+                                                   </div>
+                                                   <div class="flex-shrink-0 dropdown-notifications-actions">
+                                                       <a href="javascript:void(0)"
+                                                           class="dropdown-notifications-archive"><span
+                                                               class="ti ti-x"></span></a>
+                                                   </div>
+                                               </div>
+                                           </li>
+                                       @elseif ($notification->type == 'App\Notifications\NewCommentNotification')
+                                           <li
+                                               class="list-group-item list-group-item-action dropdown-notifications-item ">
+                                               <div class="d-flex">
+                                                   <div class="flex-shrink-0 me-3">
+                                                       <div class="avatar">
+                                                           <img src="{{ $notification->data['img_url'] }}" alt
+                                                               class="h-auto rounded-circle" />
+                                                       </div>
+                                                   </div>
+                                                   <div class="flex-grow-1">
+                                                       <h6 class="mb-1 ">{{ $notification->data['user_name'] }}🎉
+                                                           <span class="text-info">
+                                                               comment in your post
+                                                           </span>
+                                                       </h6>
+                                                       <a
+                                                           href="{{ route('posts.show', $notification->data['post_id']) }}">
+                                                           <p class="mb-0">{{ $notification->data['comment_text'] }}
+                                                           </p>
+                                                       </a>
+                                                       <small
+                                                           class="text-muted">{{ $notification->created_at->diffForHumans() }}</small>
+                                                   </div>
+                                                   <div class="flex-shrink-0 dropdown-notifications-actions">
+                                                       <a href="javascript:void(0)"
+                                                           class="dropdown-notifications-archive"><span
+                                                               class="ti ti-x"></span></a>
+                                                   </div>
+                                               </div>
+                                           </li>
+                                       @endif
+                                   @endforeach
+                                   {{-- <li class="list-group-item list-group-item-action dropdown-notifications-item">
                                        <div class="d-flex">
                                            <div class="flex-shrink-0 me-3">
                                                <div class="avatar">
@@ -273,15 +389,15 @@
                                                        class="ti ti-x"></span></a>
                                            </div>
                                        </div>
-                                   </li>
+                                   </li> --}}
                                </ul>
                            </li>
-                           <li class="dropdown-menu-footer border-top">
+                           {{-- <li class="dropdown-menu-footer border-top">
                                <a href="javascript:void(0);"
                                    class="dropdown-item d-flex justify-content-center text-primary p-2 h-px-40 mb-1 align-items-center">
                                    View all notifications
                                </a>
-                           </li>
+                           </li> --}}
                        </ul>
                    </li>
                    <!--/ Notification -->

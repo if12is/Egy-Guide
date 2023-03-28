@@ -1,5 +1,10 @@
 @extends('layouts.app')
 
+
+@section('title', 'Login 🔒')
+@section('style')
+
+@endsection
 @section('content')
     <div class="px-5 py-5 p-lg-0 bg-surface-secondary">
         <div class="d-flex justify-content-center">
