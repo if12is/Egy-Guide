@@ -11,7 +11,6 @@
     <h4 class="fw-bold py-3 mb-4">Posts</h4>
 
     <!-- Contextual Classes -->
-
     <div class="card">
         <div class="head-of-table row">
             <div class="col">

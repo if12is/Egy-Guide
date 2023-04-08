@@ -70,10 +70,16 @@ class PostController extends Controller
     {
         $post = Post::findOrFail($id);
 
-        $getNotificationId = DB::table('notifications')->where('data->post_id', $id)->where('notifiable_id', auth()->user()->id)->pluck('id');
+        $getNotificationId = DB::table('notifications')
+            ->where('data->post_id', $id)
+            ->where('notifiable_id', auth()->user()->id)
+            ->value('id');
+
         // update notification as read_at = now()
-        DB::table('notifications')->where('id', $getNotificationId)->update(['read_at' => now()]);
-        // dd($getNotificationId);
+        DB::table('notifications')->where('id', $getNotificationId)
+            ->update(['read_at' => now()]);
+
+
         return view('front.single-post', ['post' => $post]);
     }
 
